@@ -39,8 +39,11 @@ You can now navigate to other pages to explore.
 This page lets you chooose two nodes to find the shortest path between them.  
 <img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/221698974-9b3547b8-9200-46ac-8fc5-8d16db5aaad4.png">
 
-Simply type the acronym of the starting node in the `Starting node` box, select the correct acronym, and do the same for `Ending node`.  
+Simply type the acronym of the starting node in the `Starting node` box, select the correct acronym
 <img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/221699077-8c5c98b3-253f-40d2-b1ed-37942adbb48c.png">  
+
+You can also do the same for `Ending node`. As you can see, the changes you make here is reflected immediately below in the graph.   
+<img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/221702141-fe266949-d376-4ccd-93d2-f549c9e3315c.png">  
 
 The result will be shown in the report below.
 
