@@ -59,10 +59,10 @@ Similar instruction to previous section, simply type the acronym of the starting
 ### 2.6 Finding all connected nodes, within a certain length
 Sometimes, in a very big graph, you only want to see the neighboring nodes of a node. To see the relationship between each other, you can use this graph. 
 
-To find the visualization of which node is connected to the `Starting node`, simply type the acronym of the starting node in the `Starting node` box, and specify the length of connection to it. 1 would mean its direct neighbor, 2 would expand one more beyond it. The example below is length 3. That's why you can see nodes such as `PAC_ADMIN`, `REFDATA`. The result will be shown in the report on the right. 
+To find the visualization of which node is connected to the `Starting node`, simply type the acronym of the starting node in the `Starting node` box, and specify the `Length` of connection to it. 1 would mean its direct neighbor, 2 would expand one more beyond it. The example below is length 3. That's why you can see nodes such as `PAC_ADMIN`, `REFDATA`. The result will be shown in the report on the right. 
 
 ### 2.7 Finding all nodes, within a certain length, NODES only
 In complementary to previous graph, this is one without the relationship showing, only nodes. 
 
-Simply type the acronym of the starting node in the `Starting node` box, and specify the length of connection to it. 1 would mean its direct neighbor, 2 would expand one more beyond it. The example below is length 3. That's why you can see nodes such as `PAC_ADMIN`, `REFDATA`. The result will be shown in the report on the right. 
+Simply type the acronym of the starting node in the `Starting node` box, and specify the `Length` of connection to it. 1 would mean its direct neighbor, 2 would expand one more beyond it. The example below is length 3. That's why you can see nodes such as `PAC_ADMIN`, `REFDATA`. The result will be shown in the report on the right. 
 
