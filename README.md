@@ -1,5 +1,5 @@
 # A guide to exploring PSSI database and visualizing with `NeoDash`
-This is a guide to import and use a `NeoDash` preset given without opening `neo4j browser`. To fully follow the guide, you will need to already have the data. The preset can be downloaded [here](https://github.com/agiga-quanta/PSSI_database/blob/main/NeoDash/NeoDash_fish_preset.json). 
+This is a guide to import and use a `NeoDash` preset given without opening `neo4j browser`. To fully follow the guide, you will need to already have the data. The preset can be downloaded [here](https://github.com/agiga-quanta/PSSI_database/blob/main/NeoDash/NeoDash_fish_preset.json). In case you need a refresh on how to install NeoDash, click [here to be taken to a guide to install NeoDash](https://github.com/agiga-quanta/Neo4j-data-exploration-guide#part-2-setting-up-dataset-in-neo4j)
 
 
 ## Part 1: Launching dashboard with NeoDash
