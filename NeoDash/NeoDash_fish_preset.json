@@ -1,0 +1,30 @@
+{
+  "title": "Lineage tracking",
+  "version": "2.2",
+  "settings": {
+    "pagenumber": 0,
+    "editable": true,
+    "fullscreenEnabled": false,
+    "parameters": {}
+  },
+  "pages": [
+    {
+      "title": "Main Page",
+      "reports": [
+        {
+          "title": "Hi there 👋 ",
+          "query": "**Welcome to Lineage tracking!** \n\nBefore you use this dashboard, you will need to load the data into neo4j Desktop\n\nPlease click on the adjacent report to load the data ->\n\n",
+          "width": 7,
+          "height": 2,
+          "x": 0,
+          "y": 0,
+          "type": "text",
+          "selection": {},
+          "settings": {}
+        }
+      ]
+    }
+  ],
+  "parameters": {},
+  "extensions": {}
+}
