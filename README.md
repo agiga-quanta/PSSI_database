@@ -1,5 +1,5 @@
 # A guide to import PSSI database, and visualize the database with [`NeoDash`](https://neo4j.com/developer-blog/neodash-2-0-a-brand-new-way-to-visualize-neo4j/)
-This is a guide to importing, and visualizing PSSI database with a `NeoDash` dashboard preset given. To fully follow the guide, you will need to already have the data. The dashboard preset can be downloaded [here](https://github.com/agiga-quanta/PSSI_database/blob/main/NeoDash/NeoDash_fish_preset.json). In case you need a refresh on how to install NeoDash, click [here to be taken to a guide to install NeoDash](https://github.com/agiga-quanta/Neo4j-data-exploration-guide#part-2-setting-up-dataset-in-neo4j)
+This is a guide to importing, and visualizing PSSI database with a `NeoDash` dashboard preset given. To fully follow the guide, you will need to already have the data. The [`NeoDash_fish_preset.json`](https://github.com/agiga-quanta/PSSI_database/blob/main/NeoDash/NeoDash_fish_preset.json) dashboard preset can be access [here](https://github.com/agiga-quanta/PSSI_database/blob/main/NeoDash/NeoDash_fish_preset.json). In case you need a refresh on how to install NeoDash, click [here to be taken to a guide to install NeoDash](https://github.com/agiga-quanta/Neo4j-data-exploration-guide#part-2-setting-up-dataset-in-neo4j)
 
 ## Part 1: Importing data into `neo4j`
 Since our dataset are already made above in tsv files, you can import them into the project by following the steps below:
@@ -23,18 +23,14 @@ You can click `Yes - Install`. The data it can access are only those limited to 
 Once inside, you will be greeted with the following screen:  
 <img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/219765488-b10fa080-3fd3-4e9a-9555-350ac3e65f45.png"> 
 
-### 2.1 Loading a dashboard from JSON
-If you already have a dashboard file, you can either access it from loading dashboard from neo4j, or from json files available.  
-On the left column, you can load the dashboard by clicking the icon shown below:   
+### 2.1 Loading a dashboard from `NeoDash_fish_preset.json` file
+If you already have a dashboard file - in this case is `NeoDash_fish_preset.json`, you can access it [here](https://github.com/agiga-quanta/PSSI_database/blob/main/NeoDash/NeoDash_fish_preset.json). On the left column, you can load the dashboard by clicking the icon shown below:   
 <img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/219776702-618eec2a-78c8-49e5-8674-2ce0e82f26bc.png">
 
-If you are loading from a json file, select the `Select from File` option:  
-<img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/219780754-439d2d66-3842-4231-8f7e-fb9948ecc201.png">  
+To load from a json file copy the content from [`NeoDash_fish_preset.json`](https://github.com/agiga-quanta/PSSI_database/blob/main/NeoDash/NeoDash_fish_preset.json):  
+<img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/221725874-1133f621-7bc2-43f8-b32d-a51b689b032d.png"> 
 
-NeoDash will show you a window where you can open the `NeoDash_fish_preset.json` file you downloaded.  
-<img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/221700286-bf5ed28f-29fa-4b3b-b9bc-0dfb276eb36a.png"> 
-
-In addition to that, you can also copy and paste the text within the `.json` file into the area below. Click `LOAD DASHBOARD` to load the preset.  
+Then paste the entire text within the file into the area below. Click `LOAD DASHBOARD` to load the preset.
 <img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/221699854-239aa186-c9d8-46aa-8627-2b808eb8d99c.png"> 
 
 ## Part 3: Using the preset "Lineage Tracking" dashboard
