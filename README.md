@@ -42,40 +42,35 @@ This page lets you chooose two nodes to find the shortest path between them.
 Simply type the acronym of the starting node in the `Starting node` box, select the correct acronym
 <img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/221699077-8c5c98b3-253f-40d2-b1ed-37942adbb48c.png">  
 
-You can also do the same for `Ending node`. As you can see, the changes you make here is reflected immediately below in the graph.   
+You can also do the same for `Ending node`. As you can see, the changes you make here is reflected immediately below in the graph. The result will be shown in the report below.    
 <img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/221702141-fe266949-d376-4ccd-93d2-f549c9e3315c.png">  
 
-The result will be shown in the report below.
+
 
 ### 2.3 Finding all path between two nodes
-This page lets you chooose two nodes to find all the paths between them.   
-<img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/221699333-14b74001-e4e5-449a-9489-11f32f0f1549.png">
-
-Similar instruction to previous section, simply type the acronym of the starting node in the `Starting node` box, select the correct acronym, and do the same for `Ending node`. The result will be shown in the report below. 
-
+This page lets you chooose two nodes to find all the paths between them. Similar instruction to previous section, simply type the acronym of the starting node in the `Starting node` box, select the correct acronym, and do the same for `Ending node`. The result will be shown in the report below.   
+<img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/221718823-018a4320-d043-43a2-93af-7e289bb5d7aa.png">  
 
 ### 2.4 Finding all shortest path to one node
-This idea comes from combining the previous two ideas. By selecting a starting node, the output will show all nodes connected to it and also the shortest path.   
-<img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/221699423-ea5a6bea-c871-46b9-a90e-4959f9f3c20c.png">
+This idea comes from combining the previous two ideas. By selecting a `Starting node`, the output will show all nodes connected to it and also the shortest path. Similar instruction to previous section, simply type the acronym of the starting node in the `Starting node` box. The result will be shown in the report on the right.  
+<img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/221718913-3d59518b-461f-4e5e-a993-cd88d0c8ca28.png">
 
-Similar instruction to previous section, simply type the acronym of the starting node in the `Starting node` box. The result will be shown in the report on the right. 
 
 
 ### 2.5 Finding all distinct, directed, and connected node to one node
 If you do not want a graph, this idea can show the lists of distinct but connected nodes in the graph. By selecting a starting node, the output will show all nodes connected to it.  
-<img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/221699504-534e0b9e-61d4-4212-8068-d342b0b0f58d.png">
+<img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/221718974-03b40c01-161e-4eb0-92c7-29dea28a8239.png">
 
 Similar instruction to previous section, simply type the acronym of the starting node in the `Starting node` box. The result will be shown in the report below. 
 
 ### 2.6 Finding all connected nodes, within a certain length
-Sometimes, in a very big graph, you only want to see the neighboring nodes of a node. To see the relationship between each other, you can use this graph.   
-<img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/221699568-674d61ec-c07a-4706-ab52-36c5d93a491c.png">
-
-To find the visualization of which node is connected to the `Starting node`, simply type the acronym of the starting node in the `Starting node` box, and specify the `Length` of connection to it. 1 would mean its direct neighbor, 2 would expand one more beyond it. The example below is length 3. That's why you can see nodes such as `PAC_ADMIN`, `REFDATA`. The result will be shown in the report on the right. 
+Sometimes, in a very big graph, you only want to see the neighboring nodes of a node. To see the relationship between each other, you can use this graph. To find the visualization of which node is connected to the `Starting node`, simply type the acronym of the starting node in the `Starting node` box, and specify the `Length` of connection to it. 1 would mean its direct neighbor, 2 would expand one more beyond it. The example below is length 3. That's why you can see nodes such as `PAC_ADMIN`, `REFDATA`. The result will be shown in the report on the right.  
+<img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/221719118-281a8b01-adf4-4fc5-a16a-cde0573aa3c7.png">
 
 ### 2.7 Finding all nodes, within a certain length, NODES only
-In complementary to previous graph, this is one without the relationship showing, only nodes.   
-<img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/221699648-2ca7b11e-ea81-45fb-b6ee-482da57a3fbf.png">
+In complementary to previous graph, this is one without the relationship showing, only nodes. Simply type the acronym of the starting node in the `Starting node` box, and specify the `Length` of connection to it. 1 would mean its direct neighbor, 2 would expand one more beyond it. The example below is length 3. That's why you can see nodes such as `PAC_ADMIN`, `REFDATA`. The result will be shown in the report on the right. This graph is usually the hardest to see by default. However, you can zoom and move the nodes around for better presentation.  
+<img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/221719209-aef9cdc3-ee03-4869-8da6-bcb61a774cc7.png">
 
-Simply type the acronym of the starting node in the `Starting node` box, and specify the `Length` of connection to it. 1 would mean its direct neighbor, 2 would expand one more beyond it. The example below is length 3. That's why you can see nodes such as `PAC_ADMIN`, `REFDATA`. The result will be shown in the report on the right. This graph is usually the hardest to see by default. However, you can zoom and move the nodes around for better presentation.
+
+
 
