@@ -5,22 +5,374 @@
     "pagenumber": 0,
     "editable": true,
     "fullscreenEnabled": false,
-    "parameters": {}
+    "parameters": {
+      "neodash_dataasset_uid_1": "",
+      "neodash_dataasset_uid_1_display": "",
+      "neodash_dataasset_uid_2": "MRP_SYS",
+      "neodash_dataasset_uid_2_display": "MRP_SYS",
+      "neodash_import_file": "lineage.tsv",
+      "neodash_dataasset_uid_3": "PADS",
+      "neodash_dataasset_uid_3_display": "PADS",
+      "neodash_dataasset_uid_4": "MRP_SYS",
+      "neodash_dataasset_uid_4_display": "MRP_SYS",
+      "neodash_dataasset_uid_5": "SOG",
+      "neodash_dataasset_uid_5_display": "SOG",
+      "neodash_dataasset_uid_6": "SOG",
+      "neodash_dataasset_uid_6_display": "SOG",
+      "neodash_dataasset_uid_7": "MRP_SYS",
+      "neodash_dataasset_uid_7_display": "MRP_SYS",
+      "neodash_length": "3",
+      "neodash_dataasset_uid_8": "MRP_SYS",
+      "neodash_dataasset_uid_8_display": "MRP_SYS",
+      "neodash_length_2": "3"
+    }
   },
   "pages": [
+    {
+      "title": "All nodes can be reached from a selected one, with in three steps",
+      "reports": [
+        {
+          "title": "Select node",
+          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`uid` as value,  n.`uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
+          "width": 3,
+          "height": 2,
+          "x": 0,
+          "y": 0,
+          "type": "select",
+          "selection": {},
+          "settings": {
+            "nodePositions": {},
+            "type": "Node Property",
+            "entityType": "DataAsset",
+            "propertyType": "uid",
+            "propertyTypeDisplay": "uid",
+            "parameterName": "neodash_dataasset_uid_8",
+            "id": "8"
+          }
+        },
+        {
+          "title": "Reachable nodes within length",
+          "query": "// All nodes can be reached from a selected one, with in three steps\nMATCH (n:DataAsset {uid: $neodash_dataasset_uid_8})\nWITH n\n    MATCH (m:DataAsset)\n        WHERE m <> n\nWITH n, m    \n    MATCH p=SHORTESTPATH((m)-[*]->(n))\n        WHERE LENGTH(p) >= toInteger($neodash_length_2)\nRETURN m\n\n\n",
+          "width": 7,
+          "height": 4,
+          "x": 3,
+          "y": 0,
+          "type": "graph",
+          "selection": {
+            "DataAsset": "acronym"
+          },
+          "settings": {
+            "nodePositions": {},
+            "defaultNodeSize": 20,
+            "nodeLabelFontSize": 10
+          }
+        },
+        {
+          "title": "Length",
+          "query": "RETURN true",
+          "width": 3,
+          "height": 2,
+          "x": 0,
+          "y": 4,
+          "type": "select",
+          "selection": {},
+          "settings": {
+            "nodePositions": {},
+            "type": "Free Text",
+            "entityType": "Length 2",
+            "parameterName": "neodash_length_2"
+          }
+        }
+      ]
+    },
     {
       "title": "Main Page",
       "reports": [
         {
           "title": "Hi there 👋 ",
-          "query": "**Welcome to Lineage tracking!** \n\nBefore you use this dashboard, you will need to load the data into neo4j Desktop\n\nPlease click on the adjacent report to load the data ->\n\n",
-          "width": 7,
-          "height": 2,
+          "query": "**Welcome to Lineage tracking!** \n\nBefore you use this dashboard, please click on the play icon beside this report to load the data. The `-1` can be ignored.\n\nYou can proceed to other tabs/pages to checkout further interaction and visualization.",
+          "width": 5,
+          "height": 1,
           "x": 0,
           "y": 0,
           "type": "text",
           "selection": {},
           "settings": {}
+        },
+        {
+          "title": "Import data",
+          "query": "CALL apoc.cypher.runMany(\"\nLOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\\t'\nWITH row\n    MERGE (n:DataAsset {uid: TRIM(row.Data_Asset_Acronym)})\n        SET\n            n.name = TRIM(row.Data_Asset_Name),\n            n.gid = TRIM(row.Graph_ID),\n            n.iid = TRIM(row.Inventory_ID),\n            n.type = TRIM(row.Data_Asset_Type),\n            n.acronym = TRIM(row.Data_Asset_Acronym),\n            n.desc = TRIM(row.Data_Asset_Description),\n            n.format = TRIM(row.Data_Asset_Format),\n            n.decision = TRIM(row.Decision),\n            n.inbound = TRIM(row.Inbound_Data_Linkage),\n            n.outbound = TRIM(row.Outbound_Data_Linkage),\n            n.twoway = TRIM(row.Two_Way_Linkage),\n            n.topic = TRIM(row.Data_Asset_topic);\n\nLOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\\t'\nWITH row\n    MERGE (n:DataAsset {uid: TRIM(row.Data_Asset_Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Inbound_Data_Linkage_List, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {uid: TRIM(link[0])})\n    MERGE (n)<-[r:IN]-(m)\n        SET \n            r.type = TRIM(link[1])\nUNION \n\nLOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\\t'\nWITH row\n    MERGE (n:DataAsset {uid: TRIM(row.Data_Asset_Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Outbound_Data_Linkage_List, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {uid: TRIM(link[0])})\n    MERGE (n)-[r:OUT]->(m)\n        SET \n            r.type = TRIM(link[1])\nUNION \n\nLOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\\t'\nWITH row\n    MERGE (n:DataAsset {uid: TRIM(row.Data_Asset_Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Two_Way_Linkage_List, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {uid: TRIM(link[0])})\n    MERGE (n)<-[r:TWO_WAYS]->(m)\n        SET \n            r.type = TRIM(link[1]);\n\", {statistics: false});\n",
+          "width": 3,
+          "height": 1,
+          "x": 5,
+          "y": 0,
+          "type": "value",
+          "selection": {},
+          "settings": {
+            "nodePositions": {},
+            "autorun": false,
+            "refreshButtonEnabled": false,
+            "description": "Click on the play button to load data into neo4j.",
+            "type": "Node Property"
+          }
+        }
+      ]
+    },
+    {
+      "title": " All distinct, \"directed-\"connected nodes",
+      "reports": [
+        {
+          "title": "Starting node",
+          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`uid` as value,  n.`uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
+          "width": 5,
+          "height": 1,
+          "x": 0,
+          "y": 0,
+          "type": "select",
+          "selection": {},
+          "settings": {
+            "nodePositions": {},
+            "type": "Node Property",
+            "description": "Select starting node. The graph will yield all connected nodes",
+            "entityType": "DataAsset",
+            "propertyType": "uid",
+            "propertyTypeDisplay": "uid",
+            "parameterName": "neodash_dataasset_uid_6",
+            "id": "6"
+          }
+        },
+        {
+          "title": "All distinct nodes, \"directed-\"connected to starting node.",
+          "query": "// All distinct nodes, \"directed-\"connected to a selected node.\nMATCH (n:DataAsset {uid:\"SOG\"})\nWITH n\n    MATCH (m:DataAsset)\n        WHERE m <> n\nWITH n, m    \n    MATCH p=SHORTESTPATH((m)-[*]->(n))\nRETURN\n\tCOUNT(DISTINCT(NODES(p)[0])) AS total_connected,\n\tCOLLECT(DISTINCT(NODES(p)[0].acronym)) AS nodes;\n\n\n",
+          "width": 10,
+          "height": 1,
+          "x": 0,
+          "y": 1,
+          "type": "table",
+          "selection": {},
+          "settings": {
+            "nodePositions": {},
+            "columnWidths": "[1,5]"
+          }
+        }
+      ]
+    },
+    {
+      "title": "Shortest path between two ",
+      "reports": [
+        {
+          "title": "Starting node",
+          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`uid` as value,  n.`uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
+          "width": 5,
+          "height": 1,
+          "x": 0,
+          "y": 0,
+          "type": "select",
+          "selection": {},
+          "settings": {
+            "nodePositions": {},
+            "type": "Node Property",
+            "entityType": "DataAsset",
+            "propertyType": "uid",
+            "propertyTypeDisplay": "uid",
+            "parameterName": "neodash_dataasset_uid_1",
+            "id": "1"
+          }
+        },
+        {
+          "title": "Shortest path between two selected nodes",
+          "query": "\n// Single shortest path  between two selected nodes\nMATCH (n:DataAsset {uid: $neodash_dataasset_uid_2})\nWITH n\n    MATCH (m:DataAsset {uid: $neodash_dataasset_uid_1})\nWITH n, m    \n    MATCH p=SHORTESTPATH((m)-[*]->(n))\nRETURN p\n\n",
+          "width": 10,
+          "height": 3,
+          "x": 0,
+          "y": 1,
+          "type": "graph",
+          "selection": {
+            "DataAsset": "acronym"
+          },
+          "settings": {
+            "nodePositions": {},
+            "defaultNodeSize": 5
+          }
+        },
+        {
+          "title": "Ending node",
+          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`uid` as value,  n.`uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
+          "width": 5,
+          "height": 1,
+          "x": 5,
+          "y": 0,
+          "type": "select",
+          "selection": {},
+          "settings": {
+            "nodePositions": {},
+            "type": "Node Property",
+            "entityType": "DataAsset",
+            "propertyType": "uid",
+            "propertyTypeDisplay": "uid",
+            "parameterName": "neodash_dataasset_uid_2",
+            "id": "2"
+          }
+        }
+      ]
+    },
+    {
+      "title": "All shortest path, with length",
+      "reports": [
+        {
+          "title": "Starting nodes",
+          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`uid` as value,  n.`uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
+          "width": 3,
+          "height": 2,
+          "x": 0,
+          "y": 0,
+          "type": "select",
+          "selection": {},
+          "settings": {
+            "nodePositions": {},
+            "type": "Node Property",
+            "entityType": "DataAsset",
+            "propertyType": "uid",
+            "propertyTypeDisplay": "uid",
+            "parameterName": "neodash_dataasset_uid_7",
+            "id": "7"
+          }
+        },
+        {
+          "title": "All shortest path, with length at least 3, to connected nodes from a selected one",
+          "query": "// All shortest path, with length at least 3, to connected nodes from a selected one\nMATCH (n:DataAsset {uid: $neodash_dataasset_uid_7})\nWITH n\n    MATCH (m:DataAsset)\n        WHERE m <> n\nWITH n, m    \n    MATCH p=SHORTESTPATH((m)-[*]->(n))\n        WHERE LENGTH(p) >= toInteger($neodash_length)\nRETURN p\n\n\n",
+          "width": 7,
+          "height": 4,
+          "x": 3,
+          "y": 0,
+          "type": "graph",
+          "selection": {
+            "DataAsset": "acronym"
+          },
+          "settings": {
+            "nodePositions": {},
+            "defaultNodeSize": 5
+          }
+        },
+        {
+          "title": "Length/Steps",
+          "query": "RETURN true",
+          "width": 3,
+          "height": 2,
+          "x": 0,
+          "y": 4,
+          "type": "select",
+          "selection": {},
+          "settings": {
+            "nodePositions": {},
+            "type": "Free Text",
+            "entityType": "Length",
+            "parameterName": "neodash_length",
+            "suggestionLimit": 10,
+            "defaultValue": "3",
+            "description": "Enter length (in number of nodes) of each path to ending node. Default to 3"
+          }
+        }
+      ]
+    },
+    {
+      "title": "All paths between two",
+      "reports": [
+        {
+          "title": "Starting nodes",
+          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`uid` as value,  n.`uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
+          "width": 5,
+          "height": 1,
+          "x": 0,
+          "y": 0,
+          "type": "select",
+          "selection": {},
+          "settings": {
+            "nodePositions": {},
+            "type": "Node Property",
+            "entityType": "DataAsset",
+            "propertyType": "uid",
+            "propertyTypeDisplay": "uid",
+            "parameterName": "neodash_dataasset_uid_3",
+            "id": "3",
+            "description": "Select starting node of the paths you want"
+          }
+        },
+        {
+          "title": "Ending nodes",
+          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`uid` as value,  n.`uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
+          "width": 5,
+          "height": 1,
+          "x": 5,
+          "y": 0,
+          "type": "select",
+          "selection": {},
+          "settings": {
+            "nodePositions": {},
+            "type": "Node Property",
+            "entityType": "DataAsset",
+            "propertyType": "uid",
+            "propertyTypeDisplay": "uid",
+            "parameterName": "neodash_dataasset_uid_4",
+            "id": "4",
+            "description": "Select ending node of the paths you want"
+          }
+        },
+        {
+          "title": "All paths between two nodes",
+          "query": "// All paths between two selected nodes\nMATCH (n:DataAsset {uid: $neodash_dataasset_uid_4})\nWITH n\n    MATCH (m:DataAsset {uid: $neodash_dataasset_uid_3})\nWITH n, m    \n    MATCH p=((m)-[*]->(n))\nRETURN p\n\n\n",
+          "width": 10,
+          "height": 3,
+          "x": 0,
+          "y": 1,
+          "type": "graph",
+          "selection": {
+            "DataAsset": "acronym"
+          },
+          "settings": {
+            "nodePositions": {},
+            "defaultNodeSize": 5
+          }
+        }
+      ]
+    },
+    {
+      "title": "All shortest paths",
+      "reports": [
+        {
+          "title": "Starting node",
+          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`uid` as value,  n.`uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
+          "width": 3,
+          "height": 3,
+          "x": 0,
+          "y": 0,
+          "type": "select",
+          "selection": {},
+          "settings": {
+            "nodePositions": {},
+            "type": "Node Property",
+            "entityType": "DataAsset",
+            "propertyType": "uid",
+            "propertyTypeDisplay": "uid",
+            "parameterName": "neodash_dataasset_uid_5",
+            "id": "5",
+            "description": "Select starting node. The graph will yield all connected nodes and the shortest path together"
+          }
+        },
+        {
+          "title": "All shortest path to connected nodes from a selected node",
+          "query": "MATCH (n:DataAsset {uid: $neodash_dataasset_uid_5})\nWITH n\n    MATCH (m:DataAsset)\n        WHERE m <> n\nWITH n, m    \n    MATCH p=SHORTESTPATH((m)-[*]->(n))\nRETURN p\n\n\n",
+          "width": 7,
+          "height": 3,
+          "x": 3,
+          "y": 0,
+          "type": "graph",
+          "selection": {
+            "DataAsset": "acronym"
+          },
+          "settings": {
+            "nodePositions": {}
+          }
         }
       ]
     }
