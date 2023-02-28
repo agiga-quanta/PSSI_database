@@ -30,10 +30,8 @@ In addition to that, you can also copy and paste the text within the `.json` fil
 ## Part 2: Using the preset "Lineage Tracking" dashboard
 
 ### 2.1 Main Page  
-Within the dahsboard, you will be greeted with the `Main Page`. Here, you are instructed to import the data from the file given. You can click on the `play` button to import data. The output show will be `-1`, and this is normal.  
+Within the dashboard, you will be greeted with the `Main Page`. Here, you are instructed to import the data from the file given. You can click on the `play` button to import data. The output show will be `-1`, and this is normal.  You can now navigate to other pages to explore.
 <img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/221699191-ce849dd4-5914-447f-bfb1-30c591d17899.png"> 
-
-You can now navigate to other pages to explore.
 
 ### 2.2 Finding the shortest path between two nodes
 This page lets you chooose two nodes to find the shortest path between them.  
@@ -45,23 +43,17 @@ Simply type the acronym of the starting node in the `Starting node` box, select 
 You can also do the same for `Ending node`. As you can see, the changes you make here is reflected immediately below in the graph. The result will be shown in the report below.    
 <img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/221702141-fe266949-d376-4ccd-93d2-f549c9e3315c.png">  
 
-
-
 ### 2.3 Finding all path between two nodes
 This page lets you chooose two nodes to find all the paths between them. Similar instruction to previous section, simply type the acronym of the starting node in the `Starting node` box, select the correct acronym, and do the same for `Ending node`. The result will be shown in the report below.   
 <img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/221718823-018a4320-d043-43a2-93af-7e289bb5d7aa.png">  
 
 ### 2.4 Finding all shortest path to one node
-This idea comes from combining the previous two ideas. By selecting a `Starting node`, the output will show all nodes connected to it and also the shortest path. Similar instruction to previous section, simply type the acronym of the starting node in the `Starting node` box. The result will be shown in the report on the right.  
+This idea comes from combining the previous two ideas. By selecting a `Starting node`, the output will show all nodes connected to it and also their respective shortest paths. Similar instruction to previous section, simply type the acronym of the starting node in the `Starting node` box. The result will be shown in the report on the right.  
 <img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/221718913-3d59518b-461f-4e5e-a993-cd88d0c8ca28.png">
 
-
-
 ### 2.5 Finding all distinct, directed, and connected node to one node
-If you do not want a graph, this idea can show the lists of distinct but connected nodes in the graph. By selecting a starting node, the output will show all nodes connected to it.  
+If you do not want a graph, this idea can show the lists of distinct but connected nodes in the graph. By selecting a starting node, the output will show all nodes connected to it. Similar instruction to previous section, simply type the acronym of the starting node in the `Starting node` box. The result will be shown in the report below.   
 <img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/221718974-03b40c01-161e-4eb0-92c7-29dea28a8239.png">
-
-Similar instruction to previous section, simply type the acronym of the starting node in the `Starting node` box. The result will be shown in the report below. 
 
 ### 2.6 Finding all connected nodes, within a certain length
 Sometimes, in a very big graph, you only want to see the neighboring nodes of a node. To see the relationship between each other, you can use this graph. To find the visualization of which node is connected to the `Starting node`, simply type the acronym of the starting node in the `Starting node` box, and specify the `Length` of connection to it. 1 would mean its direct neighbor, 2 would expand one more beyond it. The example below is length 3. That's why you can see nodes such as `PAC_ADMIN`, `REFDATA`. The result will be shown in the report on the right.  
