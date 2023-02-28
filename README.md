@@ -9,7 +9,7 @@ Since our dataset are already made above in csv files, you can import them into 
 - Follow the path to `Open folder` -> `Imports`  
 <img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/221722969-2313de06-4b8d-48ec-9d0b-d395ae5aac39.png">
 
-You will be greeted with this window, where you can put your import files here to use in `neo4j desktop`. Once done, you can close the window.
+You will be greeted with this window, where you can put your import files here to use in `neo4j desktop`. Once done, you can close the window.  
 <img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/221723006-10f64ff7-b05c-479a-bc22-1ddbc194d588.png">
 
 ## Part 2: Launching dashboard with NeoDash
