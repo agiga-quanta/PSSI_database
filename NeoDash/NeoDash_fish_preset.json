@@ -2,12 +2,12 @@
   "title": "Lineage tracking",
   "version": "2.2",
   "settings": {
-    "pagenumber": 0,
+    "pagenumber": 4,
     "editable": true,
     "fullscreenEnabled": false,
     "parameters": {
-      "neodash_dataasset_uid_1": "",
-      "neodash_dataasset_uid_1_display": "",
+      "neodash_dataasset_uid_1": "PADS",
+      "neodash_dataasset_uid_1_display": "PADS",
       "neodash_dataasset_uid_2": "MRP_SYS",
       "neodash_dataasset_uid_2_display": "MRP_SYS",
       "neodash_import_file": "lineage.tsv",
@@ -28,63 +28,6 @@
     }
   },
   "pages": [
-    {
-      "title": "All nodes can be reached from a selected one, with in three steps",
-      "reports": [
-        {
-          "title": "Select node",
-          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`uid` as value,  n.`uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
-          "width": 3,
-          "height": 2,
-          "x": 0,
-          "y": 0,
-          "type": "select",
-          "selection": {},
-          "settings": {
-            "nodePositions": {},
-            "type": "Node Property",
-            "entityType": "DataAsset",
-            "propertyType": "uid",
-            "propertyTypeDisplay": "uid",
-            "parameterName": "neodash_dataasset_uid_8",
-            "id": "8"
-          }
-        },
-        {
-          "title": "Reachable nodes within length",
-          "query": "// All nodes can be reached from a selected one, with in three steps\nMATCH (n:DataAsset {uid: $neodash_dataasset_uid_8})\nWITH n\n    MATCH (m:DataAsset)\n        WHERE m <> n\nWITH n, m    \n    MATCH p=SHORTESTPATH((m)-[*]->(n))\n        WHERE LENGTH(p) >= toInteger($neodash_length_2)\nRETURN m\n\n\n",
-          "width": 7,
-          "height": 4,
-          "x": 3,
-          "y": 0,
-          "type": "graph",
-          "selection": {
-            "DataAsset": "acronym"
-          },
-          "settings": {
-            "nodePositions": {},
-            "defaultNodeSize": 20,
-            "nodeLabelFontSize": 10
-          }
-        },
-        {
-          "title": "Length",
-          "query": "RETURN true",
-          "width": 3,
-          "height": 2,
-          "x": 0,
-          "y": 4,
-          "type": "select",
-          "selection": {},
-          "settings": {
-            "nodePositions": {},
-            "type": "Free Text",
-            "entityType": "Length 2",
-            "parameterName": "neodash_length_2"
-          }
-        }
-      ]
-    },
     {
       "title": "Main Page",
       "reports": [
@@ -114,45 +57,6 @@
             "refreshButtonEnabled": false,
             "description": "Click on the play button to load data into neo4j.",
             "type": "Node Property"
-          }
-        }
-      ]
-    },
-    {
-      "title": " All distinct, \"directed-\"connected nodes",
-      "reports": [
-        {
-          "title": "Starting node",
-          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`uid` as value,  n.`uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
-          "width": 5,
-          "height": 1,
-          "x": 0,
-          "y": 0,
-          "type": "select",
-          "selection": {},
-          "settings": {
-            "nodePositions": {},
-            "type": "Node Property",
-            "description": "Select starting node. The graph will yield all connected nodes",
-            "entityType": "DataAsset",
-            "propertyType": "uid",
-            "propertyTypeDisplay": "uid",
-            "parameterName": "neodash_dataasset_uid_6",
-            "id": "6"
-          }
-        },
-        {
-          "title": "All distinct nodes, \"directed-\"connected to starting node.",
-          "query": "// All distinct nodes, \"directed-\"connected to a selected node.\nMATCH (n:DataAsset {uid:\"SOG\"})\nWITH n\n    MATCH (m:DataAsset)\n        WHERE m <> n\nWITH n, m    \n    MATCH p=SHORTESTPATH((m)-[*]->(n))\nRETURN\n\tCOUNT(DISTINCT(NODES(p)[0])) AS total_connected,\n\tCOLLECT(DISTINCT(NODES(p)[0].acronym)) AS nodes;\n\n\n",
-          "width": 10,
-          "height": 1,
-          "x": 0,
-          "y": 1,
-          "type": "table",
-          "selection": {},
-          "settings": {
-            "nodePositions": {},
-            "columnWidths": "[1,5]"
           }
         }
       ]
@@ -212,65 +116,6 @@
             "propertyTypeDisplay": "uid",
             "parameterName": "neodash_dataasset_uid_2",
             "id": "2"
-          }
-        }
-      ]
-    },
-    {
-      "title": "All shortest path, with length",
-      "reports": [
-        {
-          "title": "Starting nodes",
-          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`uid` as value,  n.`uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
-          "width": 3,
-          "height": 2,
-          "x": 0,
-          "y": 0,
-          "type": "select",
-          "selection": {},
-          "settings": {
-            "nodePositions": {},
-            "type": "Node Property",
-            "entityType": "DataAsset",
-            "propertyType": "uid",
-            "propertyTypeDisplay": "uid",
-            "parameterName": "neodash_dataasset_uid_7",
-            "id": "7"
-          }
-        },
-        {
-          "title": "All shortest path, with length at least 3, to connected nodes from a selected one",
-          "query": "// All shortest path, with length at least 3, to connected nodes from a selected one\nMATCH (n:DataAsset {uid: $neodash_dataasset_uid_7})\nWITH n\n    MATCH (m:DataAsset)\n        WHERE m <> n\nWITH n, m    \n    MATCH p=SHORTESTPATH((m)-[*]->(n))\n        WHERE LENGTH(p) >= toInteger($neodash_length)\nRETURN p\n\n\n",
-          "width": 7,
-          "height": 4,
-          "x": 3,
-          "y": 0,
-          "type": "graph",
-          "selection": {
-            "DataAsset": "acronym"
-          },
-          "settings": {
-            "nodePositions": {},
-            "defaultNodeSize": 5
-          }
-        },
-        {
-          "title": "Length/Steps",
-          "query": "RETURN true",
-          "width": 3,
-          "height": 2,
-          "x": 0,
-          "y": 4,
-          "type": "select",
-          "selection": {},
-          "settings": {
-            "nodePositions": {},
-            "type": "Free Text",
-            "entityType": "Length",
-            "parameterName": "neodash_length",
-            "suggestionLimit": 10,
-            "defaultValue": "3",
-            "description": "Enter length (in number of nodes) of each path to ending node. Default to 3"
           }
         }
       ]
@@ -372,6 +217,161 @@
           },
           "settings": {
             "nodePositions": {}
+          }
+        }
+      ]
+    },
+    {
+      "title": " All distinct, \"directed-\"connected nodes",
+      "reports": [
+        {
+          "title": "Starting node",
+          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`uid` as value,  n.`uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
+          "width": 5,
+          "height": 1,
+          "x": 0,
+          "y": 0,
+          "type": "select",
+          "selection": {},
+          "settings": {
+            "nodePositions": {},
+            "type": "Node Property",
+            "description": "Select starting node. The graph will yield all connected nodes",
+            "entityType": "DataAsset",
+            "propertyType": "uid",
+            "propertyTypeDisplay": "uid",
+            "parameterName": "neodash_dataasset_uid_6",
+            "id": "6"
+          }
+        },
+        {
+          "title": "All distinct nodes, \"directed-\"connected to starting node.",
+          "query": "// All distinct nodes, \"directed-\"connected to a selected node.\nMATCH (n:DataAsset {uid: $neodash_dataasset_uid_6})\nWITH n\n    MATCH (m:DataAsset)\n        WHERE m <> n\nWITH n, m    \n    MATCH p=SHORTESTPATH((m)-[*]->(n))\nRETURN\n\tCOUNT(DISTINCT(NODES(p)[0])) AS total_connected,\n\tCOLLECT(DISTINCT(NODES(p)[0].acronym)) AS nodes;\n\n\n",
+          "width": 10,
+          "height": 1,
+          "x": 0,
+          "y": 1,
+          "type": "table",
+          "selection": {},
+          "settings": {
+            "nodePositions": {},
+            "columnWidths": "[1,5]"
+          }
+        }
+      ]
+    },
+    {
+      "title": "All shortest path, with length",
+      "reports": [
+        {
+          "title": "Starting nodes",
+          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`uid` as value,  n.`uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
+          "width": 3,
+          "height": 2,
+          "x": 0,
+          "y": 0,
+          "type": "select",
+          "selection": {},
+          "settings": {
+            "nodePositions": {},
+            "type": "Node Property",
+            "entityType": "DataAsset",
+            "propertyType": "uid",
+            "propertyTypeDisplay": "uid",
+            "parameterName": "neodash_dataasset_uid_7",
+            "id": "7"
+          }
+        },
+        {
+          "title": "All shortest path, with length at least 3, to connected nodes from a selected one",
+          "query": "// All shortest path, with length at least 3, to connected nodes from a selected one\nMATCH (n:DataAsset {uid: $neodash_dataasset_uid_7})\nWITH n\n    MATCH (m:DataAsset)\n        WHERE m <> n\nWITH n, m    \n    MATCH p=SHORTESTPATH((m)-[*]->(n))\n        WHERE LENGTH(p) >= toInteger($neodash_length)\nRETURN p\n\n\n",
+          "width": 7,
+          "height": 4,
+          "x": 3,
+          "y": 0,
+          "type": "graph",
+          "selection": {
+            "DataAsset": "acronym"
+          },
+          "settings": {
+            "nodePositions": {},
+            "defaultNodeSize": 5
+          }
+        },
+        {
+          "title": "Length/Steps",
+          "query": "RETURN true",
+          "width": 3,
+          "height": 2,
+          "x": 0,
+          "y": 4,
+          "type": "select",
+          "selection": {},
+          "settings": {
+            "nodePositions": {},
+            "type": "Free Text",
+            "entityType": "Length",
+            "parameterName": "neodash_length",
+            "suggestionLimit": 10,
+            "defaultValue": "3",
+            "description": "Enter length (in number of nodes) of each path to ending node. Default to 3"
+          }
+        }
+      ]
+    },
+    {
+      "title": "All nodes can be reached from a selected one, with in three steps",
+      "reports": [
+        {
+          "title": "Select node",
+          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`uid` as value,  n.`uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
+          "width": 3,
+          "height": 2,
+          "x": 0,
+          "y": 0,
+          "type": "select",
+          "selection": {},
+          "settings": {
+            "nodePositions": {},
+            "type": "Node Property",
+            "entityType": "DataAsset",
+            "propertyType": "uid",
+            "propertyTypeDisplay": "uid",
+            "parameterName": "neodash_dataasset_uid_8",
+            "id": "8"
+          }
+        },
+        {
+          "title": "Reachable nodes within length",
+          "query": "// All nodes can be reached from a selected one, with in three steps\nMATCH (n:DataAsset {uid: $neodash_dataasset_uid_8})\nWITH n\n    MATCH (m:DataAsset)\n        WHERE m <> n\nWITH n, m    \n    MATCH p=SHORTESTPATH((m)-[*]->(n))\n        WHERE LENGTH(p) >= toInteger($neodash_length_2)\nRETURN m\n\n\n",
+          "width": 7,
+          "height": 4,
+          "x": 3,
+          "y": 0,
+          "type": "graph",
+          "selection": {
+            "DataAsset": "acronym"
+          },
+          "settings": {
+            "nodePositions": {},
+            "defaultNodeSize": 20,
+            "nodeLabelFontSize": 10
+          }
+        },
+        {
+          "title": "Length",
+          "query": "RETURN true",
+          "width": 3,
+          "height": 2,
+          "x": 0,
+          "y": 4,
+          "type": "select",
+          "selection": {},
+          "settings": {
+            "nodePositions": {},
+            "type": "Free Text",
+            "entityType": "Length 2",
+            "parameterName": "neodash_length_2"
           }
         }
       ]
