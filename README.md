@@ -1,6 +1,8 @@
 # A guide to import PSSI database, and visualize the database with [`NeoDash`](https://neo4j.com/developer-blog/neodash-2-0-a-brand-new-way-to-visualize-neo4j/)
 This is a guide to importing, and visualizing PSSI database with a `NeoDash` dashboard preset given. To fully follow the guide, you will need to already have the data. The [`NeoDash_fish_preset.json`](https://github.com/agiga-quanta/PSSI_database/blob/main/NeoDash/NeoDash_fish_preset.json) dashboard preset can be access [here](https://github.com/agiga-quanta/PSSI_database/blob/main/NeoDash/NeoDash_fish_preset.json). In case you need a refresh on how to install NeoDash, click [here to be taken to a guide to install NeoDash](https://github.com/agiga-quanta/Neo4j-data-exploration-guide#part-2-setting-up-dataset-in-neo4j)
 
+This guide is also included in a youtube playlist showing how to download and install `neo4j` Desktop [here](https://youtube.com/playlist?list=PL3KBtMOTv6gM73L33Ie1kHHKp6SXbEpyH)
+
 ## Part 1: Importing data into `neo4j`
 Since our dataset are already made above in tsv files, you can import them into the project by following the steps below:
 - Select the `...` option  
