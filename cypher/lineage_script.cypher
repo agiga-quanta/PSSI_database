@@ -27,6 +27,7 @@ WITH row
             n.p14_dataset = TRIM(row.Send_To_Dataset),
             n.p15_product = TRIM(row.Send_To_Data_Product),
             n.p16_decision = TRIM(row.Informs_Decision),
+            n.p17_label = TRIM(row.Data_Label),
             n.p06_topic = TRIM(row.Data_Asset_topic);
             
 LOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\t'
@@ -164,7 +165,7 @@ RETURN m
 //Dynamic setting labels
 MATCH (n:DataAsset)
 WITH n
-    UNWIND SPLIT(n.labels, '|') AS label
+    UNWIND SPLIT(n.p17_label, '|') AS label
 WITH n, label
     CALL apoc.create.addLabels(n, [label]) 
 YIELD node
