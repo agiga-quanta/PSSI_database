@@ -24,9 +24,9 @@ WITH row
             n.p07_inbound = TRIM(row.Inbound_Data_Linkage),
             n.p08_outbound = TRIM(row.Outbound_Data_Linkage),
             n.p09_twoway = TRIM(row.Two_Way_Linkage),
-            n.p14_dataset = TRIM(row.Send_To_Dataset),
-            n.p15_product = TRIM(row.Send_To_Data_Product),
-            n.p16_decision = TRIM(row.Informs_Decision),
+            n.p14_sends_to_dataset = TRIM(row.Send_To_Dataset),
+            n.p15_sends_to_data_product = TRIM(row.Send_To_Data_Product),
+            n.p16_informs_decision = TRIM(row.Informs_Decision),
             n.p17_label = TRIM(row.Label),
             n.p06_topic = TRIM(row.Data_Asset_topic);
             
@@ -76,7 +76,7 @@ WITH row, n
     UNWIND SPLIT(row.Send_To_Dataset, '|') AS links 
 WITH row, n, SPLIT(links, ':') AS link
     MERGE (m:DataAsset {p12_uid: TRIM(link[0])})
-    MERGE (n)-[r:TO_DATASET]->(m)
+    MERGE (n)-[r:SENDS_TO_DATASET]->(m)
         SET 
             r.type = TRIM(link[1])
             
@@ -89,7 +89,7 @@ WITH row, n
     UNWIND SPLIT(row.Send_To_Data_Product, '|') AS links 
 WITH row, n, SPLIT(links, ':') AS link
     MERGE (m:DataAsset {p12_uid: TRIM(link[0])})
-    MERGE (n)-[r:TO_PRODUCT]->(m)
+    MERGE (n)-[r:SENDS_TO_DATA_PRODUCT]->(m)
         SET 
             r.type = TRIM(link[1])
             
@@ -102,7 +102,7 @@ WITH row, n
     UNWIND SPLIT(row.Informs_Decision, '|') AS links 
 WITH row, n, SPLIT(links, ':') AS link
     MERGE (m:DataAsset {p12_uid: TRIM(link[0])})
-    MERGE (n)-[r:INFORMS]->(m)
+    MERGE (n)-[r:INFORMS_DECISION]->(m)
         SET 
             r.type = TRIM(link[1]);
             
