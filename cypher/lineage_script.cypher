@@ -27,7 +27,7 @@ WITH row
             n.p14_dataset = TRIM(row.Send_To_Dataset),
             n.p15_product = TRIM(row.Send_To_Data_Product),
             n.p16_decision = TRIM(row.Informs_Decision),
-            n.p17_label = TRIM(row.Data_Label),
+            n.p17_label = TRIM(row.Label),
             n.p06_topic = TRIM(row.Data_Asset_topic);
             
 LOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\t'
