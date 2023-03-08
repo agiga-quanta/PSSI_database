@@ -43,13 +43,15 @@
       "neodash_dataasset_p12_uid_8": "MRP_SYS",
       "neodash_dataasset_p12_uid_8_display": "MRP_SYS",
       "neodash_length2": "2",
-      "neodash_maximum_length": "1",
+      "neodash_maximum_length": "2",
       "neodash_dataasset_p12_uid_9": "MRP_SYS",
       "neodash_dataasset_p12_uid_9_display": "MRP_SYS",
       "neodash_exact_length_2": "2",
       "neodash_exact_length_1": "1",
       "neodash_dataasset_p12_uid_10": "FOS",
-      "neodash_dataasset_p12_uid_10_display": "FOS"
+      "neodash_dataasset_p12_uid_10_display": "FOS",
+      "neodash_dataasset_p12_uid_11": "FOS",
+      "neodash_dataasset_p12_uid_11_display": "FOS"
     }
   },
   "pages": [
@@ -69,7 +71,7 @@
         },
         {
           "title": "Import data",
-          "query": "CALL apoc.cypher.runMany(\"\n//Load fishy lineage data\nLOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\\t'\nWITH row\n    MERGE (n:DataAsset {p12_uid: TRIM(row.Data_Asset_Acronym)})\n        SET\n            n.p02_name = TRIM(row.Data_Asset_Name),\n            n.p10_gid = TRIM(row.Graph_ID),\n            n.p11_iid = TRIM(row.Inventory_ID),\n            n.p13_type = TRIM(row.Data_Asset_Type),\n            n.p01_acronym = TRIM(row.Data_Asset_Acronym),\n            n.p03_desc = TRIM(row.Data_Asset_Description),\n            n.p04_format = TRIM(row.Data_Asset_Format),\n            n.p05_decision = TRIM(row.Decision),\n            n.p07_inbound = TRIM(row.Inbound_Data_Linkage),\n            n.p08_outbound = TRIM(row.Outbound_Data_Linkage),\n            n.p09_twoway = TRIM(row.Two_Way_Linkage),\n            n.p06_topic = TRIM(row.Data_Asset_topic);\n            \nLOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\\t'\nWITH row\n    MERGE (n:DataAsset {p12_uid: TRIM(row.Data_Asset_Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Inbound_Data_Linkage_List, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {p12_uid: TRIM(link[0])})\n    MERGE (n)<-[r:IN]-(m)\n        SET \n            r.type = TRIM(link[1])\n\nUNION \n\nLOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\\t'\nWITH row\n    MERGE (n:DataAsset {p12_uid: TRIM(row.Data_Asset_Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Outbound_Data_Linkage_List, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {p12_uid: TRIM(link[0])})\n    MERGE (n)-[r:OUT]->(m)\n        SET \n            r.type = TRIM(link[1])\n\nUNION \n\nLOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\\t'\nWITH row\n    MERGE (n:DataAsset {p12_uid: TRIM(row.Data_Asset_Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Two_Way_Linkage_List, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {p12_uid: TRIM(link[0])})\n    MERGE (n)<-[r:TWO_WAYS]->(m)\n        SET \n            r.type = TRIM(link[1]);\n\", {statistics: false});\n",
+          "query": "CALL apoc.cypher.runMany(\"\n//Clear current database\nMATCH(n) DETACH DELETE n;\n//Load fishy lineage data\nLOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\\t'\nWITH row\n    MERGE (n:DataAsset {p12_uid: TRIM(row.Data_Asset_Acronym)})\n        SET\n            n.p02_name = TRIM(row.Data_Asset_Name),\n            n.p10_gid = TRIM(row.Graph_ID),\n            n.p11_iid = TRIM(row.Inventory_ID),\n            n.p13_type = TRIM(row.Data_Asset_Type),\n            n.p01_acronym = TRIM(row.Data_Asset_Acronym),\n            n.p03_desc = TRIM(row.Data_Asset_Description),\n            n.p04_format = TRIM(row.Data_Asset_Format),\n            n.p05_decision = TRIM(row.Decision),\n            n.p07_inbound = TRIM(row.Inbound_Data_Linkage),\n            n.p08_outbound = TRIM(row.Outbound_Data_Linkage),\n            n.p09_twoway = TRIM(row.Two_Way_Linkage),\n            n.p14_dataset = TRIM(row.Send_To_Dataset),\n            n.p15_product = TRIM(row.Send_To_Data_Product),\n            n.p16_decision = TRIM(row.Informs_Decision),\n            n.p17_label = TRIM(row.Data_Label),\n            n.p06_topic = TRIM(row.Data_Asset_topic);\n            \nLOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\\t'\nWITH row\n    MERGE (n:DataAsset {p12_uid: TRIM(row.Data_Asset_Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Inbound_Data_Linkage_List, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {p12_uid: TRIM(link[0])})\n    MERGE (n)<-[r:IN]-(m)\n        SET \n            r.type = TRIM(link[1])\n\nUNION \n\nLOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\\t'\nWITH row\n    MERGE (n:DataAsset {p12_uid: TRIM(row.Data_Asset_Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Outbound_Data_Linkage_List, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {p12_uid: TRIM(link[0])})\n    MERGE (n)-[r:OUT]->(m)\n        SET \n            r.type = TRIM(link[1])\n\nUNION \n\nLOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\\t'\nWITH row\n    MERGE (n:DataAsset {p12_uid: TRIM(row.Data_Asset_Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Two_Way_Linkage_List, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {p12_uid: TRIM(link[0])})\n    MERGE (n)<-[r:TWO_WAYS]->(m)\n        SET \n            r.type = TRIM(link[1])\n          \nUNION \n\nLOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\\t'\nWITH row\n    MERGE (n:DataAsset {p12_uid: TRIM(row.Data_Asset_Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Send_To_Dataset, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {p12_uid: TRIM(link[0])})\n    MERGE (n)-[r:TO_DATASET]->(m)\n        SET \n            r.type = TRIM(link[1])\n            \nUNION \n\nLOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\\t'\nWITH row\n    MERGE (n:DataAsset {p12_uid: TRIM(row.Data_Asset_Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Send_To_Data_Product, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {p12_uid: TRIM(link[0])})\n    MERGE (n)-[r:TO_PRODUCT]->(m)\n        SET \n            r.type = TRIM(link[1])\n            \nUNION \n\nLOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\\t'\nWITH row\n    MERGE (n:DataAsset {p12_uid: TRIM(row.Data_Asset_Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Informs_Decision, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {p12_uid: TRIM(link[0])})\n    MERGE (n)-[r:INFORMS]->(m)\n        SET \n            r.type = TRIM(link[1]);\n\n//Dynamic setting labels\nMATCH (n:DataAsset)\nWITH n\n    UNWIND SPLIT(n.p17_label, '|') AS label\nWITH n, label\n    CALL apoc.create.addLabels(n, [label]) \nYIELD node;\n\", {statistics: false});\n",
           "width": 3,
           "height": 2,
           "x": 0,
@@ -87,7 +89,7 @@
         {
           "title": "Display of entire graph database",
           "query": "MATCH (n)\nOPTIONAL MATCH (n)-[r]-()\nRETURN n, r",
-          "width": 7,
+          "width": 6,
           "height": 3,
           "x": 3,
           "y": 0,
@@ -170,7 +172,7 @@
         {
           "title": "Starting nodes",
           "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`p12_uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`p12_uid` as value,  n.`p12_uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
-          "width": 5,
+          "width": 4,
           "height": 1,
           "x": 0,
           "y": 0,
@@ -190,9 +192,9 @@
         {
           "title": "Ending nodes",
           "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`p12_uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`p12_uid` as value,  n.`p12_uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
-          "width": 5,
+          "width": 4,
           "height": 1,
-          "x": 5,
+          "x": 4,
           "y": 0,
           "type": "select",
           "selection": {},
@@ -210,7 +212,7 @@
         {
           "title": "All paths between two nodes",
           "query": "// All paths between two selected nodes\nMATCH (n:DataAsset {p12_uid: $neodash_dataasset_p12_uid_4})\nWITH n\n    MATCH (m:DataAsset {p12_uid: $neodash_dataasset_p12_uid_3})\nWITH n, m    \n    MATCH p=((m)-[*]->(n))\nRETURN p\n\n\n",
-          "width": 10,
+          "width": 8,
           "height": 3,
           "x": 0,
           "y": 1,
@@ -222,6 +224,30 @@
             "nodePositions": {},
             "defaultNodeSize": 5
           }
+        },
+        {
+          "title": "Total distinct paths between two nodes",
+          "query": "// All paths between two selected nodes\nMATCH (n:DataAsset {p12_uid: $neodash_dataasset_p12_uid_4})\nWITH n\n    MATCH (m:DataAsset {p12_uid: $neodash_dataasset_p12_uid_3})\nWITH n, m    \n    MATCH p=((m)-[*]->(n))\nWITH n, m, REVERSE(TAIL(REVERSE(TAIL(NODES(p))))) AS p\nWITH n, m, COLLECT(p) AS paths\nWITH n, m, REDUCE(list=[], p IN paths | apoc.coll.union(list, p)) AS unique_nodes\nWITH n, m, unique_nodes\n    UNWIND unique_nodes AS middle\nWITH n, m, middle\n    MATCH p=((m)-[*]->(n))\n        WHERE middle IN NODES(p)\nRETURN COUNT(DISTINCT([n IN NODES(p) | n.p12_uid]))",
+          "width": 3,
+          "height": 1,
+          "x": 8,
+          "y": 0,
+          "type": "value",
+          "selection": {},
+          "settings": {
+            "nodePositions": {}
+          }
+        },
+        {
+          "title": "Detailed distinct paths between two nodes",
+          "query": "// All paths between two selected nodes\nMATCH (n:DataAsset {p12_uid: $neodash_dataasset_p12_uid_4})\nWITH n\n    MATCH (m:DataAsset {p12_uid: $neodash_dataasset_p12_uid_3})\nWITH n, m    \n    MATCH p=((m)-[*]->(n))\nWITH n, m, REVERSE(TAIL(REVERSE(TAIL(NODES(p))))) AS p\nWITH n, m, COLLECT(p) AS paths\nWITH n, m, REDUCE(list=[], p IN paths | apoc.coll.union(list, p)) AS unique_nodes\nWITH n, m, unique_nodes\n    UNWIND unique_nodes AS middle\nWITH n, m, middle\n    MATCH p=((m)-[*]->(n))\n        WHERE middle IN NODES(p)\nRETURN DISTINCT([n IN NODES(p) | n.p12_uid]) AS Distinct_paths\n\n\n",
+          "width": 3,
+          "height": 3,
+          "x": 8,
+          "y": 1,
+          "type": "table",
+          "selection": {},
+          "settings": {}
         }
       ]
     },
@@ -481,7 +507,7 @@
         {
           "title": "Impacted node",
           "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`p12_uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`p12_uid` as value,  n.`p12_uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
-          "width": 3,
+          "width": 4,
           "height": 2,
           "x": 0,
           "y": 0,
@@ -500,9 +526,9 @@
         {
           "title": "Inbound affected nodes",
           "query": "// Direct neighboring inbound\nMATCH (n:DataAsset {p01_acronym: $neodash_dataasset_p12_uid_10})\nCALL apoc.path.spanningTree(n, {\n        relationshipFilter: \"<\",\n    maxLevel: 1\n})\nYIELD path\nRETURN path\n\n\n",
-          "width": 3,
+          "width": 4,
           "height": 2,
-          "x": 3,
+          "x": 4,
           "y": 0,
           "type": "graph",
           "selection": {
@@ -515,7 +541,7 @@
         {
           "title": "Outbound affected nodes",
           "query": "// Direct neighboring outbound\nMATCH (n:DataAsset {p01_acronym: $neodash_dataasset_p12_uid_10})\nCALL apoc.path.spanningTree(n, {\n        relationshipFilter: \">\",\n    maxLevel: 1\n})\nYIELD path\nRETURN path\n\n\n",
-          "width": 3,
+          "width": 4,
           "height": 2,
           "x": 0,
           "y": 2,
@@ -530,10 +556,63 @@
         {
           "title": "Two Ways affected nodes",
           "query": "// Direct neighboring outbound\nMATCH (n:DataAsset {p01_acronym: $neodash_dataasset_p12_uid_10})\nCALL apoc.path.spanningTree(n, {\n        relationshipFilter: \"<TWO_WAYS>\",\n    maxLevel: 1\n})\nYIELD path\nRETURN path\n\n\n",
+          "width": 4,
+          "height": 2,
+          "x": 4,
+          "y": 2,
+          "type": "graph",
+          "selection": {
+            "DataAsset": "p01_acronym"
+          },
+          "settings": {
+            "nodePositions": {}
+          }
+        }
+      ]
+    },
+    {
+      "title": "Upstream & downstream impact",
+      "reports": [
+        {
+          "title": "Impacted node",
+          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`p12_uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`p12_uid` as value,  n.`p12_uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
           "width": 3,
           "height": 2,
+          "x": 0,
+          "y": 0,
+          "type": "select",
+          "selection": {},
+          "settings": {
+            "type": "Node Property",
+            "entityType": "DataAsset",
+            "propertyType": "p12_uid",
+            "propertyTypeDisplay": "p12_uid",
+            "parameterName": "neodash_dataasset_p12_uid_11",
+            "id": "11"
+          }
+        },
+        {
+          "title": "Upstream impact",
+          "query": "// Direct neighboring inbound\nMATCH (n:DataAsset {p01_acronym: $neodash_dataasset_p12_uid_11})\nCALL apoc.path.spanningTree(n, {\n        relationshipFilter: \"<\"\n})\nYIELD path\nRETURN path\n\n\n\n\n\n",
+          "width": 4,
+          "height": 2,
+          "x": 7,
+          "y": 0,
+          "type": "graph",
+          "selection": {
+            "DataAsset": "p01_acronym"
+          },
+          "settings": {
+            "nodePositions": {}
+          }
+        },
+        {
+          "title": "Downstream impact",
+          "query": "// Direct neighboring outbound\nMATCH (n:DataAsset {p01_acronym: $neodash_dataasset_p12_uid_11})\nCALL apoc.path.spanningTree(n, {\n        relationshipFilter: \">\"\n})\nYIELD path\nRETURN path\n\n\n\n\n\n",
+          "width": 4,
+          "height": 2,
           "x": 3,
-          "y": 2,
+          "y": 0,
           "type": "graph",
           "selection": {
             "DataAsset": "p01_acronym"
