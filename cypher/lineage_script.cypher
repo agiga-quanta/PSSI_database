@@ -1,15 +1,9 @@
-MATCH (n) DETACH DELETE n;
-// DROP CONSTRAINT dataasset_uid;
-// DROP INDEX dataasset_acronym;
-
-// Create unique constraint
-// CREATE CONSTRAINT dataasset_uid IF NOT EXISTS FOR (n: `DataAsset`) REQUIRE n.`p12_uid` IS UNIQUE;
-// CREATE INDEX dataasset_acronym IF NOT EXISTS FOR (n: `DataAsset`) ON n.`p1_acronym`;
-
-// Copy lineage.tsv into import/ folder (use Neo4j Desktop -> Project -> Reveal files in Folder)
-
+//Clear current database
+MATCH(n) DETACH DELETE n;
 //Load fishy lineage data
 LOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\t'
+WITH row
+    WHERE row IS NOT NULL AND row.Data_Asset_Acronym IS NOT NULL
 WITH row
     MERGE (n:DataAsset {p12_uid: TRIM(row.Data_Asset_Acronym)})
         SET
@@ -32,6 +26,8 @@ WITH row
             
 LOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\t'
 WITH row
+    WHERE row IS NOT NULL AND row.Data_Asset_Acronym IS NOT NULL
+WITH row
     MERGE (n:DataAsset {p12_uid: TRIM(row.Data_Asset_Acronym)})
 WITH row, n
     UNWIND SPLIT(row.Inbound_Data_Linkage_List, '|') AS links 
@@ -44,6 +40,8 @@ WITH row, n, SPLIT(links, ':') AS link
 UNION 
 
 LOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\t'
+WITH row
+    WHERE row IS NOT NULL AND row.Data_Asset_Acronym IS NOT NULL
 WITH row
     MERGE (n:DataAsset {p12_uid: TRIM(row.Data_Asset_Acronym)})
 WITH row, n
@@ -58,6 +56,8 @@ UNION
 
 LOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\t'
 WITH row
+    WHERE row IS NOT NULL AND row.Data_Asset_Acronym IS NOT NULL
+WITH row
     MERGE (n:DataAsset {p12_uid: TRIM(row.Data_Asset_Acronym)})
 WITH row, n
     UNWIND SPLIT(row.Two_Way_Linkage_List, '|') AS links 
@@ -71,25 +71,29 @@ UNION
 
 LOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\t'
 WITH row
+    WHERE row IS NOT NULL AND row.Data_Asset_Acronym IS NOT NULL
+WITH row
     MERGE (n:DataAsset {p12_uid: TRIM(row.Data_Asset_Acronym)})
 WITH row, n
     UNWIND SPLIT(row.Send_To_Dataset, '|') AS links 
 WITH row, n, SPLIT(links, ':') AS link
     MERGE (m:DataAsset {p12_uid: TRIM(link[0])})
-    MERGE (n)-[r:SENDS_TO_DATASET]->(m)
+    MERGE (n)-[r:TO_DATASET]->(m)
         SET 
             r.type = TRIM(link[1])
             
 UNION 
 
 LOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\t'
+WITH row
+    WHERE row IS NOT NULL AND row.Data_Asset_Acronym IS NOT NULL
 WITH row
     MERGE (n:DataAsset {p12_uid: TRIM(row.Data_Asset_Acronym)})
 WITH row, n
     UNWIND SPLIT(row.Send_To_Data_Product, '|') AS links 
 WITH row, n, SPLIT(links, ':') AS link
     MERGE (m:DataAsset {p12_uid: TRIM(link[0])})
-    MERGE (n)-[r:SENDS_TO_DATA_PRODUCT]->(m)
+    MERGE (n)-[r:TO_PRODUCT]->(m)
         SET 
             r.type = TRIM(link[1])
             
@@ -97,12 +101,14 @@ UNION
 
 LOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\t'
 WITH row
+    WHERE row IS NOT NULL AND row.Data_Asset_Acronym IS NOT NULL
+WITH row
     MERGE (n:DataAsset {p12_uid: TRIM(row.Data_Asset_Acronym)})
 WITH row, n
     UNWIND SPLIT(row.Informs_Decision, '|') AS links 
 WITH row, n, SPLIT(links, ':') AS link
     MERGE (m:DataAsset {p12_uid: TRIM(link[0])})
-    MERGE (n)-[r:INFORMS_DECISION]->(m)
+    MERGE (n)-[r:INFORMS]->(m)
         SET 
             r.type = TRIM(link[1]);
             
