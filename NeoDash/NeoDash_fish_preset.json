@@ -51,7 +51,9 @@
       "neodash_dataasset_p12_uid_10": "FOS",
       "neodash_dataasset_p12_uid_10_display": "FOS",
       "neodash_dataasset_p12_uid_11": "FOS",
-      "neodash_dataasset_p12_uid_11_display": "FOS"
+      "neodash_dataasset_p12_uid_11_display": "FOS",
+      "neodash_dataasset_p01_acronym_12": "FOS",
+      "neodash_dataasset_p01_acronym_12_display": "FOS"
     }
   },
   "pages": [
@@ -102,13 +104,82 @@
             "defaultNodeSize": 5,
             "relationshipParticles": false,
             "refreshButtonEnabled": true,
-            "fullscreenEnabled": true
+            "fullscreenEnabled": true,
+            "nodeColorScheme": "paired",
+            "styleRules": [
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Database",
+                "customization": "node color",
+                "customizationValue": "#add8e6"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Dataset",
+                "customization": "node color",
+                "customizationValue": "#ffcccb"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Data Product",
+                "customization": "node color",
+                "customizationValue": "#b19cd9"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Decision",
+                "customization": "node color",
+                "customizationValue": "#90ee90"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Application",
+                "customization": "node color",
+                "customizationValue": "#d3d3d3"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Search data asset here",
+          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`p01_acronym`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`p01_acronym` as value,  n.`p01_acronym` as display ORDER BY size(toString(value)) ASC LIMIT 5",
+          "width": 3,
+          "height": 3,
+          "x": 0,
+          "y": 3,
+          "type": "select",
+          "selection": {},
+          "settings": {
+            "type": "Node Property",
+            "entityType": "DataAsset",
+            "propertyType": "p01_acronym",
+            "propertyTypeDisplay": "p01_acronym",
+            "parameterName": "neodash_dataasset_p01_acronym_12",
+            "id": "12"
+          }
+        },
+        {
+          "title": "Data asset details",
+          "query": "MATCH (n:DataAsset)\n    WHERE n.p12_uid = $neodash_dataasset_p01_acronym_12 \n    UNWIND keys(n) as nk\nWITH n, nk\n    RETURN nk as properties, n[nk] as values",
+          "width": 9,
+          "height": 3,
+          "x": 3,
+          "y": 3,
+          "type": "table",
+          "selection": {},
+          "settings": {
+            "columnWidths": "[1,5]"
           }
         }
       ]
     },
     {
-      "title": "Short est path between two ",
+      "title": "Short test path between two ",
       "reports": [
         {
           "title": "Starting node",
@@ -142,7 +213,44 @@
           },
           "settings": {
             "nodePositions": {},
-            "defaultNodeSize": 5
+            "defaultNodeSize": 5,
+            "styleRules": [
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Database",
+                "customization": "node color",
+                "customizationValue": "#add8e6"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Dataset",
+                "customization": "node color",
+                "customizationValue": "#Ffcccb"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Data Product",
+                "customization": "node color",
+                "customizationValue": "#B19cd9"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Decision",
+                "customization": "node color",
+                "customizationValue": "#90EE90"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Application",
+                "customization": "node color",
+                "customizationValue": "#D3D3D3"
+              }
+            ]
           }
         },
         {
@@ -222,7 +330,44 @@
           },
           "settings": {
             "nodePositions": {},
-            "defaultNodeSize": 5
+            "defaultNodeSize": 5,
+            "styleRules": [
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Database",
+                "customization": "node color",
+                "customizationValue": "#ADD8E6"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Dataset",
+                "customization": "node color",
+                "customizationValue": "#Ffcccb"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Data Product",
+                "customization": "node color",
+                "customizationValue": "#B19cd9"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Decision",
+                "customization": "node color",
+                "customizationValue": "#90EE90"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Application",
+                "customization": "node color",
+                "customizationValue": "#D3D3D3"
+              }
+            ]
           }
         },
         {
@@ -286,7 +431,44 @@
             "DataAsset": "p01_acronym"
           },
           "settings": {
-            "nodePositions": {}
+            "nodePositions": {},
+            "styleRules": [
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Database",
+                "customization": "node color",
+                "customizationValue": "#ADD8E6"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Dataset",
+                "customization": "node color",
+                "customizationValue": "#ffcccb"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Data Product",
+                "customization": "node color",
+                "customizationValue": "#b19cd9"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Decision",
+                "customization": "node color",
+                "customizationValue": "#90ee90"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Application",
+                "customization": "node color",
+                "customizationValue": "#d3d3d3"
+              }
+            ]
           }
         }
       ]
@@ -365,7 +547,44 @@
           },
           "settings": {
             "nodePositions": {},
-            "defaultNodeSize": 5
+            "defaultNodeSize": 5,
+            "styleRules": [
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Database",
+                "customization": "node color",
+                "customizationValue": "#add8e6"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Dataset",
+                "customization": "node color",
+                "customizationValue": "#ffcccb"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Data Product",
+                "customization": "node color",
+                "customizationValue": "#b19cd9"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Decision",
+                "customization": "node color",
+                "customizationValue": "#90ee90"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Application",
+                "customization": "node color",
+                "customizationValue": "#d3d3d3"
+              }
+            ]
           }
         },
         {
@@ -439,7 +658,44 @@
             "DataAsset": "p01_acronym"
           },
           "settings": {
-            "nodePositions": {}
+            "nodePositions": {},
+            "styleRules": [
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Database",
+                "customization": "node color",
+                "customizationValue": "#add8e6"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Dataset",
+                "customization": "node color",
+                "customizationValue": "#ffcccb"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Data Product",
+                "customization": "node color",
+                "customizationValue": "#b19cd9"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Decision",
+                "customization": "node color",
+                "customizationValue": "#90ee90"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Application",
+                "customization": "node color",
+                "customizationValue": "#d3d3d3"
+              }
+            ]
           }
         }
       ]
@@ -480,7 +736,44 @@
           "settings": {
             "nodePositions": {},
             "defaultNodeSize": 20,
-            "nodeLabelFontSize": 10
+            "nodeLabelFontSize": 10,
+            "styleRules": [
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Database",
+                "customization": "node color",
+                "customizationValue": "#add8e6"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Dataset",
+                "customization": "node color",
+                "customizationValue": "#ffcccb"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Data Product",
+                "customization": "node color",
+                "customizationValue": "#b19cd9"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Decision",
+                "customization": "node color",
+                "customizationValue": "#90ee90"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Application",
+                "customization": "node color",
+                "customizationValue": "#d3d3d3"
+              }
+            ]
           }
         },
         {
@@ -535,7 +828,44 @@
             "DataAsset": "p01_acronym"
           },
           "settings": {
-            "nodePositions": {}
+            "nodePositions": {},
+            "styleRules": [
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Database",
+                "customization": "node color",
+                "customizationValue": "#add8e6"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Dataset",
+                "customization": "node color",
+                "customizationValue": "#ffcccb"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Data Product",
+                "customization": "node color",
+                "customizationValue": "#b19cd9"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Decision",
+                "customization": "node color",
+                "customizationValue": "#90ee90"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Application",
+                "customization": "node color",
+                "customizationValue": "#d3d3d3"
+              }
+            ]
           }
         },
         {
@@ -550,7 +880,44 @@
             "DataAsset": "p01_acronym"
           },
           "settings": {
-            "nodePositions": {}
+            "nodePositions": {},
+            "styleRules": [
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Database",
+                "customization": "node color",
+                "customizationValue": "#add8e6"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Dataset",
+                "customization": "node color",
+                "customizationValue": "#ffcccb"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Data Product",
+                "customization": "node color",
+                "customizationValue": "#b19cd9"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Decision",
+                "customization": "node color",
+                "customizationValue": "#90ee90"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Application",
+                "customization": "node color",
+                "customizationValue": "#d3d3d3"
+              }
+            ]
           }
         },
         {
@@ -565,7 +932,44 @@
             "DataAsset": "p01_acronym"
           },
           "settings": {
-            "nodePositions": {}
+            "nodePositions": {},
+            "styleRules": [
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Database",
+                "customization": "node color",
+                "customizationValue": "#add8e6"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Dataset",
+                "customization": "node color",
+                "customizationValue": "#ffcccb"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Data Product",
+                "customization": "node color",
+                "customizationValue": "#b19cd9"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Decision",
+                "customization": "node color",
+                "customizationValue": "#90ee90"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Application",
+                "customization": "node color",
+                "customizationValue": "#d3d3d3"
+              }
+            ]
           }
         }
       ]
@@ -603,7 +1007,44 @@
             "DataAsset": "p01_acronym"
           },
           "settings": {
-            "nodePositions": {}
+            "nodePositions": {},
+            "styleRules": [
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Database",
+                "customization": "node color",
+                "customizationValue": "#add8e6"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Dataset",
+                "customization": "node color",
+                "customizationValue": "#ffcccb"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Data Product",
+                "customization": "node color",
+                "customizationValue": "#b19cd9"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Decision",
+                "customization": "node color",
+                "customizationValue": "#90ee90"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Application",
+                "customization": "node color",
+                "customizationValue": "#d3d3d3"
+              }
+            ]
           }
         },
         {
@@ -618,12 +1059,52 @@
             "DataAsset": "p01_acronym"
           },
           "settings": {
-            "nodePositions": {}
+            "nodePositions": {},
+            "styleRules": [
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Database",
+                "customization": "node color",
+                "customizationValue": "#add8e6"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Dataset",
+                "customization": "node color",
+                "customizationValue": "#ffcccb"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Data Product",
+                "customization": "node color",
+                "customizationValue": "#b19cd9"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Decision",
+                "customization": "node color",
+                "customizationValue": "#90ee90"
+              },
+              {
+                "field": "DataAsset.p17_label",
+                "condition": "=",
+                "value": "Application",
+                "customization": "node color",
+                "customizationValue": "#d3d3d3"
+              }
+            ]
           }
         }
       ]
     }
   ],
   "parameters": {},
-  "extensions": {}
+  "extensions": {
+    "advanced-charts": true,
+    "styling": true
+  }
 }
