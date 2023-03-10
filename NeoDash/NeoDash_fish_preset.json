@@ -165,7 +165,7 @@
         },
         {
           "title": "Data asset details",
-          "query": "MATCH (n:DataAsset)\n    WHERE n.p12_uid = $neodash_dataasset_p01_acronym_12 \n    UNWIND keys(n) as nk\nWITH n, nk\n    RETURN nk as properties, n[nk] as values",
+          "query": "MATCH (n:DataAsset)\n    WHERE n.p12_uid = $neodash_dataasset_p01_acronym_12 \n    UNWIND keys(n) as nk\nWITH n, nk\n    RETURN nk as properties, n[nk] as values ORDER BY nk",
           "width": 9,
           "height": 3,
           "x": 3,
