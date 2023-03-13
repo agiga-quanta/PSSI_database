@@ -37,13 +37,50 @@ Then paste the entire text within the file into the area below. Click `LOAD DASH
 
 ## Part 3: Using the preset "Lineage Tracking" dashboard
 
+### Note for this particular dashboard: 
+As of right now after loading, the dashboard disables all editing. This is for protecting the dashboard against unintended editing of the dashboard queries. In order to enable editing, follow the instruction below:  
+1. Select the setting on the left.  
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Select%20settings.jpg?raw=true"> 
+
+2. You will see that `Editable` is currently `off`. To switch it to on, simply click on it.  
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Currently%20off.jpg?raw=true"> 
+
+3. Select `on` from the drop down menu, and then close the settings. The new settings will be saved automatically.  
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Select%20On%20for%20edit.jpg?raw=true"> 
+
+As of right now, the dashboard has its own color code based on the label of data asset. Should you want to change it, follow the guide below:  
+
+1. Select the extention setting on the left.  
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Select%20extention%20here%20.jpg?raw=true"> 
+
+2. You will see the available extensions. For the color editing, select `Rule-Based Styling` to `Active`. Once you close both windows, you will be ready to change the color  
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Enable%20Rule-based%20styling.jpg?raw=true"> 
+
+3. From any report, select the setting on the top right side:  
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Select%20report%20settings.jpg?raw=true"> 
+
+4. Then, open the extention settings here:  
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Select%20extension.jpg?raw=true"> 
+
+5. Now, you will be shown the `Rule-Based Styling`, which allows you to set the many rules in your own ways. However, we are only here to change the `Node Color`.  
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Allow%20selecting%20color%20based%20on%20personalized%20rule.jpg?raw=true"> 
+
+6. To change the color, select the hex number on the right. A color map will pop up, allowing you to manually select the color, or type in the hex box below.  
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Use%20Hex%20code%20for%20color.jpg?raw=true"> 
+
+7. You can also google the code online and copy and paste it into the box.  
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Where%20to%20get%20hex%20code%20for%20color.jpg?raw=true"> 
+
 ### 3.1 Main Page  
 Within the dashboard, you will be greeted with the `Main Page`. Here, you are instructed to import the data from the file given. You can click on the `play` button to import data. The output show will be `-1`, and this is normal.  You can now navigate to other pages to explore.
 <img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/221699191-ce849dd4-5914-447f-bfb1-30c591d17899.png"> 
 
+The `Hi there` report has also been extended with a short guide to show what each page does. Scroll down within the report to see what they are. The name of each pages is shown here, and their purpose is written below.  
+<img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/221699191-ce849dd4-5914-447f-bfb1-30c591d17899.png"> 
+
 ### 3.2 Finding the shortest path between two nodes
 This page lets you chooose two nodes to find the shortest path between them.  
-<img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/221698974-9b3547b8-9200-46ac-8fc5-8d16db5aaad4.png">
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Note%20for%20Table%20of%20content.jpg?raw=true">
 
 Simply type the acronym of the starting node in the `Starting node` box, select the correct acronym
 <img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/221699077-8c5c98b3-253f-40d2-b1ed-37942adbb48c.png">  
