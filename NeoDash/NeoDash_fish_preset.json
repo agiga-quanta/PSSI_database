@@ -3,13 +3,13 @@
   "version": "2.2",
   "settings": {
     "pagenumber": 0,
-    "editable": true,
+    "editable": false,
     "fullscreenEnabled": false,
     "parameters": {
-      "neodash_dataasset_uid_1": "PADS",
-      "neodash_dataasset_uid_1_display": "PADS",
-      "neodash_dataasset_uid_2": "MRP_SYS",
-      "neodash_dataasset_uid_2_display": "MRP_SYS",
+      "neodash_dataasset_uid_1": "AQUIIS",
+      "neodash_dataasset_uid_1_display": "AQUIIS",
+      "neodash_dataasset_uid_2": "Funding_DC",
+      "neodash_dataasset_uid_2_display": "Funding_DC",
       "neodash_import_file": "lineage.tsv",
       "neodash_dataasset_uid_3": "PADS",
       "neodash_dataasset_uid_3_display": "PADS",
@@ -53,7 +53,16 @@
       "neodash_dataasset_p12_uid_11": "FOS",
       "neodash_dataasset_p12_uid_11_display": "FOS",
       "neodash_dataasset_p01_acronym_12": "FOS",
-      "neodash_dataasset_p01_acronym_12_display": "FOS"
+      "neodash_dataasset_p01_acronym_12_display": "FOS",
+      "neodash_dataasset_acronym_12": "FOS",
+      "neodash_dataasset_acronym_12_display": "FOS",
+      "neodash_dataasset_uid_9": "FOS",
+      "neodash_dataasset_uid_9_display": "FOS",
+      "neodash_maximum_length_2": "1",
+      "neodash_dataasset_uid_10": "FOS",
+      "neodash_dataasset_uid_10_display": "FOS",
+      "neodash_dataasset_uid_11": "PACHARV3",
+      "neodash_dataasset_uid_11_display": "PACHARV3"
     }
   },
   "pages": [
@@ -62,9 +71,9 @@
       "reports": [
         {
           "title": "Hi there 👋 ",
-          "query": "**Welcome to Lineage tracking!** \n\nBefore you use this dashboard, please click on the play icon below this report to load the data. The `-1` can be ignored.\n\nYou can proceed to other tabs/pages to checkout further interaction and visualization.",
-          "width": 3,
-          "height": 1,
+          "query": "# Welcome to Lineage tracking!\n\nBefore you use this dashboard, please click on the play icon in the **Clear database and Import data** report to load the data. The `-1` can be ignored.\n\nYou can proceed to other tabs/pages to checkout further interaction and visualization. Feel free to use the navigation below to choose the page you want to visit.\n\n## Guide to page usages\nNote: DA is short for Data Asset.  \n\n### Main Page:   \n  - Landing Page, shows an overall display of entire graph database and allow search for details of individual data asset\n\n### Shortest path between DA:  \n  - Allows searching for the shortest path that connects between two selected data assets.                                                \n\n### All paths between DA:  \n  - Allows showing all paths connecting two selected data assets.                                                                         \n\n### All shortest path to connected DA from starting DA:  \n  - Combines the two above for showing all shortest paths connected to one data asset.                                                    \n\n### All distinct, \"directed-\"connected DA:  \n  - Shows all data assets connected to selected data assets. This will show the data assets only, no paths.                               \n\n### Reachable DAs in exact length:  \n  - Allows searching for all data assets that are exactly an amount of steps away from selected data asset.                               \n\n### Reachable DAs within maximum length:  \n  - Allows searching for all data assets that are within an amount of steps away from selected data asset.                                \n\n### Reachable DAs within length, DAs only:  \n  - Allows searching for all data assets that are within an amount of steps away from selected data asset, but only shows data assets. \n\n### DA impact:  \n  - Allows showing all immediate impact of selected data asset.                                                                           \n\n### Upstream & downstream DA impact:  \n  - Allows showing all other data assets impacted upstream and downstream from selected data asset.                                       ",
+          "width": 6,
+          "height": 2,
           "x": 0,
           "y": 0,
           "type": "text",
@@ -73,11 +82,11 @@
         },
         {
           "title": "Clear database and Import data",
-          "query": "CALL apoc.cypher.runMany(\"\n//Clear current database\nMATCH(n) DETACH DELETE n;\n//Load fishy lineage data\nLOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Data_Asset_Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {p12_uid: TRIM(row.Data_Asset_Acronym)})\n        SET\n            n.p02_name = TRIM(row.Data_Asset_Name),\n            n.p10_gid = TRIM(row.Graph_ID),\n            n.p11_iid = TRIM(row.Inventory_ID),\n            n.p13_type = TRIM(row.Data_Asset_Type),\n            n.p01_acronym = TRIM(row.Data_Asset_Acronym),\n            n.p03_desc = TRIM(row.Data_Asset_Description),\n            n.p04_format = TRIM(row.Data_Asset_Format),\n            n.p05_decision = TRIM(row.Decision),\n            n.p07_inbound = TRIM(row.Inbound_Data_Linkage),\n            n.p08_outbound = TRIM(row.Outbound_Data_Linkage),\n            n.p09_twoway = TRIM(row.Two_Way_Linkage),\n            n.p14_sends_to_dataset = TRIM(row.Send_To_Dataset),\n            n.p15_sends_to_data_product = TRIM(row.Send_To_Data_Product),\n            n.p16_informs_decision = TRIM(row.Informs_Decision),\n            n.p17_label = TRIM(row.Label),\n            n.p06_topic = TRIM(row.Data_Asset_topic);\n            \nLOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Data_Asset_Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {p12_uid: TRIM(row.Data_Asset_Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Inbound_Data_Linkage_List, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {p12_uid: TRIM(link[0])})\n    MERGE (n)<-[r:IN]-(m)\n        SET \n            r.type = TRIM(link[1])\n\nUNION \n\nLOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Data_Asset_Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {p12_uid: TRIM(row.Data_Asset_Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Outbound_Data_Linkage_List, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {p12_uid: TRIM(link[0])})\n    MERGE (n)-[r:OUT]->(m)\n        SET \n            r.type = TRIM(link[1])\n\nUNION \n\nLOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Data_Asset_Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {p12_uid: TRIM(row.Data_Asset_Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Two_Way_Linkage_List, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {p12_uid: TRIM(link[0])})\n    MERGE (n)<-[r:TWO_WAYS]->(m)\n        SET \n            r.type = TRIM(link[1])\n          \nUNION \n\nLOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Data_Asset_Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {p12_uid: TRIM(row.Data_Asset_Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Send_To_Dataset, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {p12_uid: TRIM(link[0])})\n    MERGE (n)-[r:TO_DATASET]->(m)\n        SET \n            r.type = TRIM(link[1])\n            \nUNION \n\nLOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Data_Asset_Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {p12_uid: TRIM(row.Data_Asset_Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Send_To_Data_Product, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {p12_uid: TRIM(link[0])})\n    MERGE (n)-[r:TO_PRODUCT]->(m)\n        SET \n            r.type = TRIM(link[1])\n            \nUNION \n\nLOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Data_Asset_Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {p12_uid: TRIM(row.Data_Asset_Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Informs_Decision, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {p12_uid: TRIM(link[0])})\n    MERGE (n)-[r:INFORMS]->(m)\n        SET \n            r.type = TRIM(link[1]);\n//Dynamic setting labels\nMATCH (n:DataAsset)\nWITH n\n    UNWIND SPLIT(n.p17_label, '|') AS label\nWITH n, label\n    CALL apoc.create.addLabels(n, [label]) \nYIELD node;\n\", {statistics: false});\n",
+          "query": "CALL apoc.cypher.runMany(\"\n//Clear current database\nMATCH(n) DETACH DELETE n;\n//Load fishy lineage data\nLOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {uid: TRIM(row.Acronym)})\n        SET\n            n.Name = TRIM(row.Name),\n            n.Graph_ID = TRIM(row.Graph_ID),\n            n.Type = TRIM(row.Type),\n            n.Acronym = TRIM(row.Acronym),\n            n.Description = TRIM(row.Description),\n            n.Format = TRIM(row.Format),\n            n.Decision = TRIM(row.Decision),\n            n.Inbound = TRIM(row.Inbound_Data_Linkage),\n            n.Outbound = TRIM(row.Outbound_Data_Linkage),\n            n.Twoway = TRIM(row.Two_Way_Linkage),\n            n.Sends_to_dataset = TRIM(row.Send_To_Dataset),\n            n.Sends_to_data_product = TRIM(row.Send_To_Data_Product),\n            n.Informs_decision = TRIM(row.Informs_Decision),\n            n.Label = TRIM(row.Label),\n            n.Topic = TRIM(row.Topic);\n            \nLOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {uid: TRIM(row.Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Inbound_Data_Linkage_List, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {uid: TRIM(link[0])})\n    MERGE (n)<-[r:IN]-(m)\n        SET \n            r.type = TRIM(link[1])\n\nUNION \n\nLOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {uid: TRIM(row.Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Outbound_Data_Linkage_List, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {uid: TRIM(link[0])})\n    MERGE (n)-[r:OUT]->(m)\n        SET \n            r.type = TRIM(link[1])\n\nUNION \n\nLOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {uid: TRIM(row.Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Two_Way_Linkage_List, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {uid: TRIM(link[0])})\n    MERGE (n)<-[r:TWO_WAYS]->(m)\n        SET \n            r.type = TRIM(link[1])\n          \nUNION \n\nLOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {uid: TRIM(row.Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Send_To_Dataset, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {uid: TRIM(link[0])})\n    MERGE (n)-[r:TO_DATASET]->(m)\n        SET \n            r.type = TRIM(link[1])\n            \nUNION \n\nLOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {uid: TRIM(row.Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Send_To_Data_Product, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {uid: TRIM(link[0])})\n    MERGE (n)-[r:TO_PRODUCT]->(m)\n        SET \n            r.type = TRIM(link[1])\n            \nUNION \n\nLOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {uid: TRIM(row.Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Informs_Decision, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {uid: TRIM(link[0])})\n    MERGE (n)-[r:INFORMS]->(m)\n        SET \n            r.type = TRIM(link[1]);\n//Dynamic setting labels\nMATCH (n:DataAsset)\nWITH n\n    UNWIND SPLIT(n.Label, '|') AS label\nWITH n, label\n    CALL apoc.create.addLabels(n, [label]) \nYIELD node;\n\", {statistics: false});\n",
           "width": 3,
           "height": 2,
-          "x": 0,
-          "y": 1,
+          "x": 6,
+          "y": 0,
           "type": "value",
           "selection": {},
           "settings": {
@@ -91,13 +100,13 @@
         {
           "title": "Display of entire graph database",
           "query": "MATCH (n)\nOPTIONAL MATCH (n)-[r]-()\nRETURN n, r",
-          "width": 6,
+          "width": 5,
           "height": 3,
-          "x": 3,
-          "y": 0,
+          "x": 0,
+          "y": 2,
           "type": "graph",
           "selection": {
-            "DataAsset": "p01_acronym"
+            "DataAsset": "Acronym"
           },
           "settings": {
             "nodePositions": {},
@@ -108,35 +117,35 @@
             "nodeColorScheme": "paired",
             "styleRules": [
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Database",
                 "customization": "node color",
                 "customizationValue": "#add8e6"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Dataset",
                 "customization": "node color",
                 "customizationValue": "#ffcccb"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Data Product",
                 "customization": "node color",
                 "customizationValue": "#b19cd9"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Decision",
                 "customization": "node color",
                 "customizationValue": "#90ee90"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Application",
                 "customization": "node color",
@@ -147,29 +156,29 @@
         },
         {
           "title": "Search data asset here",
-          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`p01_acronym`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`p01_acronym` as value,  n.`p01_acronym` as display ORDER BY size(toString(value)) ASC LIMIT 5",
+          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`Acronym`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`Acronym` as value,  n.`Acronym` as display ORDER BY size(toString(value)) ASC LIMIT 5",
           "width": 3,
-          "height": 3,
-          "x": 0,
-          "y": 3,
+          "height": 2,
+          "x": 9,
+          "y": 0,
           "type": "select",
           "selection": {},
           "settings": {
             "type": "Node Property",
             "entityType": "DataAsset",
-            "propertyType": "p01_acronym",
-            "propertyTypeDisplay": "p01_acronym",
-            "parameterName": "neodash_dataasset_p01_acronym_12",
+            "propertyType": "Acronym",
+            "propertyTypeDisplay": "Acronym",
+            "parameterName": "neodash_dataasset_acronym_12",
             "id": "12"
           }
         },
         {
           "title": "Data asset details",
-          "query": "MATCH (n:DataAsset)\n    WHERE n.p12_uid = $neodash_dataasset_p01_acronym_12 \n    UNWIND keys(n) as nk\nWITH n, nk\n    RETURN nk as properties, n[nk] as values ORDER BY nk",
-          "width": 9,
+          "query": "MATCH (n:DataAsset)\n    WHERE n.uid = $neodash_dataasset_acronym_12  \n    UNWIND keys(n) as nk\nWITH n, nk\n    RETURN nk as properties, n[nk] as values ORDER BY nk",
+          "width": 7,
           "height": 3,
-          "x": 3,
-          "y": 3,
+          "x": 5,
+          "y": 2,
           "type": "table",
           "selection": {},
           "settings": {
@@ -179,11 +188,11 @@
       ]
     },
     {
-      "title": "Short test path between two ",
+      "title": "Shortest path between DA",
       "reports": [
         {
-          "title": "Starting node",
-          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`p12_uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`p12_uid` as value,  n.`p12_uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
+          "title": "Starting Data Asset",
+          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`uid` as value,  n.`uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
           "width": 5,
           "height": 1,
           "x": 0,
@@ -195,56 +204,56 @@
             "type": "Node Property",
             "entityType": "DataAsset",
             "id": "1",
-            "propertyType": "p12_uid",
-            "propertyTypeDisplay": "p12_uid",
-            "parameterName": "neodash_dataasset_p12_uid_1"
+            "propertyType": "uid",
+            "propertyTypeDisplay": "uid",
+            "parameterName": "neodash_dataasset_uid_1"
           }
         },
         {
           "title": "Shortest path between two selected nodes",
-          "query": "// Single shortest path  between two selected nodes\nMATCH (n:DataAsset {p12_uid: $neodash_dataasset_p12_uid_2})\nWITH n\n    MATCH (m:DataAsset {p12_uid: $neodash_dataasset_p12_uid_1})\nWITH n, m    \n    MATCH p=SHORTESTPATH((m)-[*]->(n))\nRETURN p\n",
+          "query": "// Single shortest path  between two selected nodes\nMATCH (n:DataAsset {uid: $neodash_dataasset_uid_2 })\nWITH n\n    MATCH (m:DataAsset {uid: $neodash_dataasset_uid_1 })\nWITH n, m    \n    MATCH p=SHORTESTPATH((m)-[*]->(n))\nRETURN p\n",
           "width": 10,
           "height": 3,
           "x": 0,
           "y": 1,
           "type": "graph",
           "selection": {
-            "DataAsset": "p01_acronym"
+            "DataAsset": "Acronym"
           },
           "settings": {
             "nodePositions": {},
             "defaultNodeSize": 5,
             "styleRules": [
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Database",
                 "customization": "node color",
                 "customizationValue": "#add8e6"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Dataset",
                 "customization": "node color",
                 "customizationValue": "#Ffcccb"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Data Product",
                 "customization": "node color",
                 "customizationValue": "#B19cd9"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Decision",
                 "customization": "node color",
                 "customizationValue": "#90EE90"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Application",
                 "customization": "node color",
@@ -254,8 +263,8 @@
           }
         },
         {
-          "title": "Ending node",
-          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`p12_uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`p12_uid` as value,  n.`p12_uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
+          "title": "Ending Data Asset",
+          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`uid` as value,  n.`uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
           "width": 5,
           "height": 1,
           "x": 5,
@@ -267,19 +276,19 @@
             "type": "Node Property",
             "entityType": "DataAsset",
             "id": "2",
-            "propertyType": "p12_uid",
-            "propertyTypeDisplay": "p12_uid",
-            "parameterName": "neodash_dataasset_p12_uid_2"
+            "propertyType": "uid",
+            "propertyTypeDisplay": "uid",
+            "parameterName": "neodash_dataasset_uid_2"
           }
         }
       ]
     },
     {
-      "title": "All paths between two",
+      "title": "All paths between DA",
       "reports": [
         {
-          "title": "Starting nodes",
-          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`p12_uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`p12_uid` as value,  n.`p12_uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
+          "title": "Starting Data Asset",
+          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`uid` as value,  n.`uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
           "width": 4,
           "height": 1,
           "x": 0,
@@ -290,16 +299,16 @@
             "nodePositions": {},
             "type": "Node Property",
             "entityType": "DataAsset",
-            "propertyType": "p12_uid",
-            "propertyTypeDisplay": "p12_uid",
-            "parameterName": "neodash_dataasset_p12_uid_3",
+            "propertyType": "uid",
+            "propertyTypeDisplay": "uid",
+            "parameterName": "neodash_dataasset_uid_3",
             "id": "3",
             "description": "Select starting node of the paths you want"
           }
         },
         {
-          "title": "Ending nodes",
-          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`p12_uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`p12_uid` as value,  n.`p12_uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
+          "title": "Ending Data Asset",
+          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`uid` as value,  n.`uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
           "width": 4,
           "height": 1,
           "x": 4,
@@ -312,56 +321,56 @@
             "entityType": "DataAsset",
             "id": "4",
             "description": "Select ending node of the paths you want",
-            "propertyType": "p12_uid",
-            "propertyTypeDisplay": "p12_uid",
-            "parameterName": "neodash_dataasset_p12_uid_4"
+            "propertyType": "uid",
+            "propertyTypeDisplay": "uid",
+            "parameterName": "neodash_dataasset_uid_4"
           }
         },
         {
           "title": "All paths between two nodes",
-          "query": "// All paths between two selected nodes\nMATCH (n:DataAsset {p12_uid: $neodash_dataasset_p12_uid_4})\nWITH n\n    MATCH (m:DataAsset {p12_uid: $neodash_dataasset_p12_uid_3})\nWITH n, m    \n    MATCH p=((m)-[*]->(n))\nRETURN p\n\n\n",
+          "query": "// All paths between two selected nodes\nMATCH (n:DataAsset {uid: $neodash_dataasset_uid_4 })\nWITH n\n    MATCH (m:DataAsset {uid: $neodash_dataasset_uid_3 })\nWITH n, m    \n    MATCH p=((m)-[*]->(n))\nRETURN p\n\n\n",
           "width": 8,
           "height": 3,
           "x": 0,
           "y": 1,
           "type": "graph",
           "selection": {
-            "DataAsset": "p01_acronym"
+            "DataAsset": "Acronym"
           },
           "settings": {
             "nodePositions": {},
             "defaultNodeSize": 5,
             "styleRules": [
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Database",
                 "customization": "node color",
                 "customizationValue": "#ADD8E6"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Dataset",
                 "customization": "node color",
                 "customizationValue": "#Ffcccb"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Data Product",
                 "customization": "node color",
                 "customizationValue": "#B19cd9"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Decision",
                 "customization": "node color",
                 "customizationValue": "#90EE90"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Application",
                 "customization": "node color",
@@ -371,8 +380,8 @@
           }
         },
         {
-          "title": "Total distinct paths between two nodes",
-          "query": "// All paths between two selected nodes\nMATCH (n:DataAsset {p12_uid: $neodash_dataasset_p12_uid_4})\nWITH n\n    MATCH (m:DataAsset {p12_uid: $neodash_dataasset_p12_uid_3})\nWITH n, m    \n    MATCH p=((m)-[*]->(n))\nWITH n, m, REVERSE(TAIL(REVERSE(TAIL(NODES(p))))) AS p\nWITH n, m, COLLECT(p) AS paths\nWITH n, m, REDUCE(list=[], p IN paths | apoc.coll.union(list, p)) AS unique_nodes\nWITH n, m, unique_nodes\n    UNWIND unique_nodes AS middle\nWITH n, m, middle\n    MATCH p=((m)-[*]->(n))\n        WHERE middle IN NODES(p)\nRETURN COUNT(DISTINCT([n IN NODES(p) | n.p12_uid]))",
+          "title": "Total distinct paths between two Data Assets",
+          "query": "// All paths between two selected nodes\nMATCH (n:DataAsset {uid: $neodash_dataasset_uid_4})\nWITH n\n    MATCH (m:DataAsset {uid: $neodash_dataasset_uid_3})\nWITH n, m    \n    MATCH p=((m)-[*]->(n))\nWITH n, m, REVERSE(TAIL(REVERSE(TAIL(NODES(p))))) AS p\nWITH n, m, COLLECT(p) AS paths\nWITH n, m, REDUCE(list=[], p IN paths | apoc.coll.union(list, p)) AS unique_nodes\nWITH n, m, unique_nodes\n    UNWIND unique_nodes AS middle\nWITH n, m, middle\n    MATCH p=((m)-[*]->(n))\n        WHERE middle IN NODES(p)\nRETURN COUNT(DISTINCT([n IN NODES(p) | n.uid]))",
           "width": 3,
           "height": 1,
           "x": 8,
@@ -384,8 +393,8 @@
           }
         },
         {
-          "title": "Detailed distinct paths between two nodes",
-          "query": "// All paths between two selected nodes\nMATCH (n:DataAsset {p12_uid: $neodash_dataasset_p12_uid_4})\nWITH n\n    MATCH (m:DataAsset {p12_uid: $neodash_dataasset_p12_uid_3})\nWITH n, m    \n    MATCH p=((m)-[*]->(n))\nWITH n, m, REVERSE(TAIL(REVERSE(TAIL(NODES(p))))) AS p\nWITH n, m, COLLECT(p) AS paths\nWITH n, m, REDUCE(list=[], p IN paths | apoc.coll.union(list, p)) AS unique_nodes\nWITH n, m, unique_nodes\n    UNWIND unique_nodes AS middle\nWITH n, m, middle\n    MATCH p=((m)-[*]->(n))\n        WHERE middle IN NODES(p)\nRETURN DISTINCT([n IN NODES(p) | n.p12_uid]) AS Distinct_paths\n\n\n",
+          "title": "Detailed distinct paths between two Data Assets",
+          "query": "// All paths between two selected nodes\nMATCH (n:DataAsset {uid: $neodash_dataasset_uid_4})\nWITH n\n    MATCH (m:DataAsset {uid: $neodash_dataasset_uid_3})\nWITH n, m    \n    MATCH p=((m)-[*]->(n))\nWITH n, m, REVERSE(TAIL(REVERSE(TAIL(NODES(p))))) AS p\nWITH n, m, COLLECT(p) AS paths\nWITH n, m, REDUCE(list=[], p IN paths | apoc.coll.union(list, p)) AS unique_nodes\nWITH n, m, unique_nodes\n    UNWIND unique_nodes AS middle\nWITH n, m, middle\n    MATCH p=((m)-[*]->(n))\n        WHERE middle IN NODES(p)\nRETURN DISTINCT([n IN NODES(p) | n.uid]) AS Distinct_paths\n\n\n",
           "width": 3,
           "height": 3,
           "x": 8,
@@ -397,11 +406,11 @@
       ]
     },
     {
-      "title": "All shortest paths",
+      "title": "All shortest path to connected DA from starting DA",
       "reports": [
         {
-          "title": "Starting node",
-          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`p12_uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`p12_uid` as value,  n.`p12_uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
+          "title": "Starting data asset",
+          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`uid` as value,  n.`uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
           "width": 3,
           "height": 3,
           "x": 0,
@@ -412,57 +421,57 @@
             "nodePositions": {},
             "type": "Node Property",
             "entityType": "DataAsset",
-            "propertyType": "p12_uid",
-            "propertyTypeDisplay": "p12_uid",
-            "parameterName": "neodash_dataasset_p12_uid_5",
+            "propertyType": "uid",
+            "propertyTypeDisplay": "uid",
+            "parameterName": "neodash_dataasset_uid_5",
             "id": "5",
             "description": "Select starting node. The graph will yield all connected nodes and the shortest path together"
           }
         },
         {
-          "title": "All shortest path to connected nodes from a selected node",
-          "query": "MATCH (n:DataAsset {p12_uid: $neodash_dataasset_p12_uid_5})\nWITH n\n    MATCH (m:DataAsset)\n        WHERE m <> n\nWITH n, m    \n    MATCH p=SHORTESTPATH((m)-[*]->(n))\nRETURN p\n\n\n",
+          "title": "All shortest path to connected data assets from starting data asset",
+          "query": "MATCH (n:DataAsset {uid: $neodash_dataasset_uid_5})\nWITH n\n    MATCH (m:DataAsset)\n        WHERE m <> n\nWITH n, m    \n    MATCH p=SHORTESTPATH((m)-[*]->(n))\nRETURN p\n\n\n",
           "width": 7,
           "height": 3,
           "x": 3,
           "y": 0,
           "type": "graph",
           "selection": {
-            "DataAsset": "p01_acronym"
+            "DataAsset": "Acronym"
           },
           "settings": {
             "nodePositions": {},
             "styleRules": [
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Database",
                 "customization": "node color",
                 "customizationValue": "#ADD8E6"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Dataset",
                 "customization": "node color",
                 "customizationValue": "#ffcccb"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Data Product",
                 "customization": "node color",
                 "customizationValue": "#b19cd9"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Decision",
                 "customization": "node color",
                 "customizationValue": "#90ee90"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Application",
                 "customization": "node color",
@@ -477,8 +486,8 @@
       "title": " All distinct, \"directed-\"connected nodes",
       "reports": [
         {
-          "title": "Starting node",
-          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`p12_uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`p12_uid` as value,  n.`p12_uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
+          "title": "Starting data asset",
+          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`uid` as value,  n.`uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
           "width": 5,
           "height": 1,
           "x": 0,
@@ -490,15 +499,15 @@
             "type": "Node Property",
             "description": "Select starting node. The graph will yield all connected nodes",
             "entityType": "DataAsset",
-            "propertyType": "p12_uid",
-            "propertyTypeDisplay": "p12_uid",
-            "parameterName": "neodash_dataasset_p12_uid_6",
-            "id": "6"
+            "id": "6",
+            "propertyType": "uid",
+            "propertyTypeDisplay": "uid",
+            "parameterName": "neodash_dataasset_uid_6"
           }
         },
         {
-          "title": "All distinct nodes, \"directed-\"connected to starting node.",
-          "query": "// All distinct nodes, \"directed-\"connected to a selected node.\nMATCH (n:DataAsset {p12_uid:$neodash_dataasset_p12_uid_6})\nWITH n\n    MATCH (m:DataAsset)\n        WHERE m <> n\nWITH n, m    \n    MATCH p=SHORTESTPATH((m)-[*]->(n))\nRETURN\n\tCOUNT(DISTINCT(NODES(p)[0])) AS total_connected,\n\tCOLLECT(DISTINCT(NODES(p)[0].p01_acronym)) AS nodes;\n\n\n",
+          "title": "All distinct data assets, \"directed-\"connected to starting data asset.",
+          "query": "// All distinct nodes, \"directed-\"connected to a selected node.\nMATCH (n:DataAsset {uid:$neodash_dataasset_uid_6 })\nWITH n\n    MATCH (m:DataAsset)\n        WHERE m <> n\nWITH n, m    \n    MATCH p=SHORTESTPATH((m)-[*]->(n))\nRETURN\n\tCOUNT(DISTINCT(NODES(p)[0])) AS total_connected,\n\tCOLLECT(DISTINCT(NODES(p)[0].Acronym)) AS nodes;\n\n\n",
           "width": 10,
           "height": 1,
           "x": 0,
@@ -513,11 +522,11 @@
       ]
     },
     {
-      "title": "Reachable nodes in exact length",
+      "title": "Reachable DAs in exact length",
       "reports": [
         {
           "title": "Starting nodes",
-          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`p12_uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`p12_uid` as value,  n.`p12_uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
+          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`uid` as value,  n.`uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
           "width": 3,
           "height": 2,
           "x": 0,
@@ -529,56 +538,56 @@
             "type": "Node Property",
             "entityType": "DataAsset",
             "id": "7",
-            "propertyType": "p12_uid",
-            "propertyTypeDisplay": "p12_uid",
-            "parameterName": "neodash_dataasset_p12_uid_7"
+            "propertyType": "uid",
+            "propertyTypeDisplay": "uid",
+            "parameterName": "neodash_dataasset_uid_7"
           }
         },
         {
-          "title": "All reachable nodes, with shortest path specified length",
-          "query": "// All shortest paths, with length exact, to connected nodes from selected one\nMATCH (n:DataAsset {p12_uid: $neodash_dataasset_p12_uid_7})\nWITH n\n    MATCH (m:DataAsset)\n        WHERE m <> n\nWITH n, m    \n    MATCH p=SHORTESTPATH((m)-[*]->(n))\n        WHERE LENGTH(p) = toInteger($neodash_exact_length_1)\nRETURN p\n\n",
+          "title": "All reachable nodes, with shortest path specified length on the left",
+          "query": "// All shortest paths, with length exact, to connected nodes from selected one\nMATCH (n:DataAsset {uid: $neodash_dataasset_uid_7 })\nWITH n\n    MATCH (m:DataAsset)\n        WHERE m <> n\nWITH n, m    \n    MATCH p=SHORTESTPATH((m)-[*]->(n))\n        WHERE LENGTH(p) = toInteger($neodash_exact_length_1)\nRETURN p\n\n",
           "width": 7,
           "height": 4,
           "x": 3,
           "y": 0,
           "type": "graph",
           "selection": {
-            "DataAsset": "p01_acronym"
+            "DataAsset": "Acronym"
           },
           "settings": {
             "nodePositions": {},
             "defaultNodeSize": 5,
             "styleRules": [
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Database",
                 "customization": "node color",
                 "customizationValue": "#add8e6"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Dataset",
                 "customization": "node color",
                 "customizationValue": "#ffcccb"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Data Product",
                 "customization": "node color",
                 "customizationValue": "#b19cd9"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Decision",
                 "customization": "node color",
                 "customizationValue": "#90ee90"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Application",
                 "customization": "node color",
@@ -609,11 +618,11 @@
       ]
     },
     {
-      "title": "Reachable nodes within maximum length",
+      "title": "Reachable DAs within maximum length",
       "reports": [
         {
           "title": "Starting node",
-          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`p12_uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`p12_uid` as value,  n.`p12_uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
+          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`uid` as value,  n.`uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
           "width": 3,
           "height": 2,
           "x": 0,
@@ -624,9 +633,9 @@
             "nodePositions": {},
             "type": "Node Property",
             "entityType": "DataAsset",
-            "propertyType": "p12_uid",
-            "propertyTypeDisplay": "p12_uid",
-            "parameterName": "neodash_dataasset_p12_uid_8",
+            "propertyType": "uid",
+            "propertyTypeDisplay": "uid",
+            "parameterName": "neodash_dataasset_uid_8",
             "id": "8"
           }
         },
@@ -648,48 +657,48 @@
         },
         {
           "title": "Reachable nodes within Maximum length",
-          "query": "// All shortest paths, at maximum length specified, to connected nodes from selected one\nMATCH (n:DataAsset {p12_uid: $neodash_dataasset_p12_uid_8})\nWITH n\n    MATCH (m:DataAsset)\n        WHERE m <> n\nWITH n, m    \n    MATCH p=SHORTESTPATH((m)-[*]->(n))\n        WHERE LENGTH(p) <= toInteger($neodash_maximum_length)\nRETURN p\n\n\n\n\n",
+          "query": "// All shortest paths, at maximum length specified, to connected nodes from selected one\nMATCH (n:DataAsset {uid: $neodash_dataasset_uid_8})\nWITH n\n    MATCH (m:DataAsset)\n        WHERE m <> n\nWITH n, m    \n    MATCH p=SHORTESTPATH((m)-[*]->(n))\n        WHERE LENGTH(p) <= toInteger($neodash_maximum_length)\nRETURN p\n\n\n\n\n",
           "width": 6,
           "height": 4,
           "x": 3,
           "y": 0,
           "type": "graph",
           "selection": {
-            "DataAsset": "p01_acronym"
+            "DataAsset": "Acronym"
           },
           "settings": {
             "nodePositions": {},
             "styleRules": [
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Database",
                 "customization": "node color",
                 "customizationValue": "#add8e6"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Dataset",
                 "customization": "node color",
                 "customizationValue": "#ffcccb"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Data Product",
                 "customization": "node color",
                 "customizationValue": "#b19cd9"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Decision",
                 "customization": "node color",
                 "customizationValue": "#90ee90"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Application",
                 "customization": "node color",
@@ -701,11 +710,11 @@
       ]
     },
     {
-      "title": "Reachable nodes within length",
+      "title": "Reachable DAs within length",
       "reports": [
         {
-          "title": "Select node",
-          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`p12_uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`p12_uid` as value,  n.`p12_uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
+          "title": "Starting Data Asset",
+          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`uid` as value,  n.`uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
           "width": 3,
           "height": 2,
           "x": 0,
@@ -716,22 +725,22 @@
             "nodePositions": {},
             "type": "Node Property",
             "entityType": "DataAsset",
-            "propertyType": "p12_uid",
-            "propertyTypeDisplay": "p12_uid",
-            "parameterName": "neodash_dataasset_p12_uid_9",
+            "propertyType": "uid",
+            "propertyTypeDisplay": "uid",
+            "parameterName": "neodash_dataasset_uid_9",
             "id": "9"
           }
         },
         {
-          "title": "Reachable nodes within length",
-          "query": "// All nodes can be reached from a selected one, with in three steps\nMATCH (n:DataAsset {p12_uid: $neodash_dataasset_p12_uid_9 })\nWITH n\n    MATCH (m:DataAsset)\n        WHERE m <> n\nWITH n, m    \n    MATCH p=SHORTESTPATH((m)-[*]->(n))\n        WHERE LENGTH(p) = toInteger($neodash_exact_length_2 )\nRETURN m\n\n\n",
+          "title": "Reachable Data Assets within length from starting Data Asset, no path",
+          "query": "// All nodes can be reached from a selected one, within steps\nMATCH (n:DataAsset {uid: $neodash_dataasset_uid_9  })\nWITH n\n    MATCH (m:DataAsset)\n        WHERE m <> n\nWITH n, m    \n    MATCH p=SHORTESTPATH((m)-[*]->(n))\n        WHERE LENGTH(p) <= toInteger($neodash_maximum_length_2)\nRETURN m\n\n\n",
           "width": 7,
           "height": 4,
           "x": 3,
           "y": 0,
           "type": "graph",
           "selection": {
-            "DataAsset": "p01_acronym"
+            "DataAsset": "Acronym"
           },
           "settings": {
             "nodePositions": {},
@@ -739,35 +748,35 @@
             "nodeLabelFontSize": 10,
             "styleRules": [
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Database",
                 "customization": "node color",
                 "customizationValue": "#add8e6"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Dataset",
                 "customization": "node color",
                 "customizationValue": "#ffcccb"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Data Product",
                 "customization": "node color",
                 "customizationValue": "#b19cd9"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Decision",
                 "customization": "node color",
                 "customizationValue": "#90ee90"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Application",
                 "customization": "node color",
@@ -777,7 +786,7 @@
           }
         },
         {
-          "title": "Exact Length",
+          "title": "Maximum Length",
           "query": "RETURN true",
           "width": 3,
           "height": 2,
@@ -788,18 +797,18 @@
           "settings": {
             "nodePositions": {},
             "type": "Free Text",
-            "entityType": "Exact length 2",
-            "parameterName": "neodash_exact_length_2"
+            "entityType": "Maximum length 2",
+            "parameterName": "neodash_maximum_length_2"
           }
         }
       ]
     },
     {
-      "title": "Node impact",
+      "title": "DA impact",
       "reports": [
         {
           "title": "Impacted node",
-          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`p12_uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`p12_uid` as value,  n.`p12_uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
+          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`uid` as value,  n.`uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
           "width": 4,
           "height": 2,
           "x": 0,
@@ -810,56 +819,56 @@
             "nodePositions": {},
             "type": "Node Property",
             "entityType": "DataAsset",
-            "propertyType": "p12_uid",
-            "propertyTypeDisplay": "p12_uid",
-            "parameterName": "neodash_dataasset_p12_uid_10",
+            "propertyType": "uid",
+            "propertyTypeDisplay": "uid",
+            "parameterName": "neodash_dataasset_uid_10",
             "id": "10"
           }
         },
         {
           "title": "Inbound affected nodes",
-          "query": "// Direct neighboring inbound\nMATCH (n:DataAsset {p01_acronym: $neodash_dataasset_p12_uid_10})\nCALL apoc.path.spanningTree(n, {\n        relationshipFilter: \"<\",\n    maxLevel: 1\n})\nYIELD path\nRETURN path\n\n\n",
+          "query": "// Direct neighboring inbound\nMATCH (n:DataAsset {Acronym: $neodash_dataasset_uid_10 })\nCALL apoc.path.spanningTree(n, {\n        relationshipFilter: \"<\",\n    maxLevel: 1\n})\nYIELD path\nRETURN path\n\n\n",
           "width": 4,
           "height": 2,
           "x": 4,
           "y": 0,
           "type": "graph",
           "selection": {
-            "DataAsset": "p01_acronym"
+            "DataAsset": "Acronym"
           },
           "settings": {
             "nodePositions": {},
             "styleRules": [
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Database",
                 "customization": "node color",
                 "customizationValue": "#add8e6"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Dataset",
                 "customization": "node color",
                 "customizationValue": "#ffcccb"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Data Product",
                 "customization": "node color",
                 "customizationValue": "#b19cd9"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Decision",
                 "customization": "node color",
                 "customizationValue": "#90ee90"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Application",
                 "customization": "node color",
@@ -870,48 +879,48 @@
         },
         {
           "title": "Outbound affected nodes",
-          "query": "// Direct neighboring outbound\nMATCH (n:DataAsset {p01_acronym: $neodash_dataasset_p12_uid_10})\nCALL apoc.path.spanningTree(n, {\n        relationshipFilter: \">\",\n    maxLevel: 1\n})\nYIELD path\nRETURN path\n\n\n",
+          "query": "// Direct neighboring outbound\nMATCH (n:DataAsset {Acronym: $neodash_dataasset_uid_10 })\nCALL apoc.path.spanningTree(n, {\n        relationshipFilter: \">\",\n    maxLevel: 1\n})\nYIELD path\nRETURN path\n\n\n",
           "width": 4,
           "height": 2,
           "x": 0,
           "y": 2,
           "type": "graph",
           "selection": {
-            "DataAsset": "p01_acronym"
+            "DataAsset": "Acronym"
           },
           "settings": {
             "nodePositions": {},
             "styleRules": [
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Database",
                 "customization": "node color",
                 "customizationValue": "#add8e6"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Dataset",
                 "customization": "node color",
                 "customizationValue": "#ffcccb"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Data Product",
                 "customization": "node color",
                 "customizationValue": "#b19cd9"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Decision",
                 "customization": "node color",
                 "customizationValue": "#90ee90"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Application",
                 "customization": "node color",
@@ -922,48 +931,48 @@
         },
         {
           "title": "Two Ways affected nodes",
-          "query": "// Direct neighboring outbound\nMATCH (n:DataAsset {p01_acronym: $neodash_dataasset_p12_uid_10})\nCALL apoc.path.spanningTree(n, {\n        relationshipFilter: \"<TWO_WAYS>\",\n    maxLevel: 1\n})\nYIELD path\nRETURN path\n\n\n",
+          "query": "// Direct neighboring outbound\nMATCH (n:DataAsset {Acronym: $neodash_dataasset_uid_10 })\nCALL apoc.path.spanningTree(n, {\n        relationshipFilter: \"<TWO_WAYS>\",\n    maxLevel: 1\n})\nYIELD path\nRETURN path\n\n\n",
           "width": 4,
           "height": 2,
           "x": 4,
           "y": 2,
           "type": "graph",
           "selection": {
-            "DataAsset": "p01_acronym"
+            "DataAsset": "Acronym"
           },
           "settings": {
             "nodePositions": {},
             "styleRules": [
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Database",
                 "customization": "node color",
                 "customizationValue": "#add8e6"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Dataset",
                 "customization": "node color",
                 "customizationValue": "#ffcccb"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Data Product",
                 "customization": "node color",
                 "customizationValue": "#b19cd9"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Decision",
                 "customization": "node color",
                 "customizationValue": "#90ee90"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Application",
                 "customization": "node color",
@@ -975,11 +984,11 @@
       ]
     },
     {
-      "title": "Upstream & downstream impact",
+      "title": "Upstream & downstream DA impact",
       "reports": [
         {
           "title": "Impacted node",
-          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`p12_uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`p12_uid` as value,  n.`p12_uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
+          "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`uid`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`uid` as value,  n.`uid` as display ORDER BY size(toString(value)) ASC LIMIT 5",
           "width": 3,
           "height": 2,
           "x": 0,
@@ -989,56 +998,56 @@
           "settings": {
             "type": "Node Property",
             "entityType": "DataAsset",
-            "propertyType": "p12_uid",
-            "propertyTypeDisplay": "p12_uid",
-            "parameterName": "neodash_dataasset_p12_uid_11",
+            "propertyType": "uid",
+            "propertyTypeDisplay": "uid",
+            "parameterName": "neodash_dataasset_uid_11",
             "id": "11"
           }
         },
         {
           "title": "Upstream impact",
-          "query": "// Direct neighboring inbound\nMATCH (n:DataAsset {p01_acronym: $neodash_dataasset_p12_uid_11})\nCALL apoc.path.spanningTree(n, {\n        relationshipFilter: \"<\"\n})\nYIELD path\nRETURN path\n\n\n\n\n\n",
+          "query": "// Direct neighboring inbound\nMATCH (n:DataAsset {Acronym: $neodash_dataasset_uid_11 })\nCALL apoc.path.spanningTree(n, {\n        relationshipFilter: \"<\"\n})\nYIELD path\nRETURN path\n\n\n\n\n\n",
           "width": 4,
           "height": 2,
           "x": 7,
           "y": 0,
           "type": "graph",
           "selection": {
-            "DataAsset": "p01_acronym"
+            "DataAsset": "Acronym"
           },
           "settings": {
             "nodePositions": {},
             "styleRules": [
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Database",
                 "customization": "node color",
                 "customizationValue": "#add8e6"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Dataset",
                 "customization": "node color",
                 "customizationValue": "#ffcccb"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Data Product",
                 "customization": "node color",
                 "customizationValue": "#b19cd9"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Decision",
                 "customization": "node color",
                 "customizationValue": "#90ee90"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Application",
                 "customization": "node color",
@@ -1049,48 +1058,48 @@
         },
         {
           "title": "Downstream impact",
-          "query": "// Direct neighboring outbound\nMATCH (n:DataAsset {p01_acronym: $neodash_dataasset_p12_uid_11})\nCALL apoc.path.spanningTree(n, {\n        relationshipFilter: \">\"\n})\nYIELD path\nRETURN path\n\n\n\n\n\n",
+          "query": "// Direct neighboring outbound\nMATCH (n:DataAsset {Acronym: $neodash_dataasset_uid_11 })\nCALL apoc.path.spanningTree(n, {\n        relationshipFilter: \">\"\n})\nYIELD path\nRETURN path\n\n\n\n\n\n",
           "width": 4,
           "height": 2,
           "x": 3,
           "y": 0,
           "type": "graph",
           "selection": {
-            "DataAsset": "p01_acronym"
+            "DataAsset": "Acronym"
           },
           "settings": {
             "nodePositions": {},
             "styleRules": [
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Database",
                 "customization": "node color",
                 "customizationValue": "#add8e6"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Dataset",
                 "customization": "node color",
                 "customizationValue": "#ffcccb"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Data Product",
                 "customization": "node color",
                 "customizationValue": "#b19cd9"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Decision",
                 "customization": "node color",
                 "customizationValue": "#90ee90"
               },
               {
-                "field": "DataAsset.p17_label",
+                "field": "DataAsset.Label",
                 "condition": "=",
                 "value": "Application",
                 "customization": "node color",
@@ -1104,7 +1113,6 @@
   ],
   "parameters": {},
   "extensions": {
-    "advanced-charts": true,
     "styling": true
   }
 }

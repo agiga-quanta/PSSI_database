@@ -38,7 +38,7 @@ Then paste the entire text within the file into the area below. Click `LOAD DASH
 ## Part 3: Using the preset "Lineage Tracking" dashboard
 
 ### Note for this particular dashboard: 
-As of right now after loading, the dashboard disables all editing. This is for protecting the dashboard against unintended editing of the dashboard queries. In order to enable editing, follow the instruction below:  
+As of right now after loading, the dashboard disables all editing. **You can still use the dashboard while the editing is off**. This is for protecting the dashboard against unintended editing of the dashboard queries. In order to enable editing, follow the instruction below:  
 1. Select the setting on the left.  
 <img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Select%20settings.jpg?raw=true"> 
 
@@ -76,11 +76,11 @@ Within the dashboard, you will be greeted with the `Main Page`. Here, you are in
 <img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/221699191-ce849dd4-5914-447f-bfb1-30c591d17899.png"> 
 
 The `Hi there` report has also been extended with a short guide to show what each page does. Scroll down within the report to see what they are. The name of each pages is shown here, and their purpose is written below.  
-<img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/221699191-ce849dd4-5914-447f-bfb1-30c591d17899.png"> 
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Note%20for%20Table%20of%20content.jpg?raw=true"> 
 
 ### 3.2 Finding the shortest path between two nodes
 This page lets you chooose two nodes to find the shortest path between them.  
-<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Note%20for%20Table%20of%20content.jpg?raw=true">
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Shortest%20path%20single.png?raw=true">
 
 Simply type the acronym of the starting node in the `Starting node` box, select the correct acronym
 <img width="640" alt="image" src="https://user-images.githubusercontent.com/60938608/221699077-8c5c98b3-253f-40d2-b1ed-37942adbb48c.png">  
