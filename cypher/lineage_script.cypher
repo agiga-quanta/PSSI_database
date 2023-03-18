@@ -214,3 +214,21 @@ RETURN DISTINCT m
 MATCH (n:DataAsset {Acronym: 'FOS'}), (m:DataAsset)
 WHERE (n)<-[*]-(m) AND NOT((m)<--())
 RETURN DISTINCT m
+
+//Find neighbor of a selected node, else display all graph
+
+WITH CASE $neodash_dataasset_acronym_12 IS NOT NULL WHEN TRUE THEN not(isEmpty($neodash_dataasset_acronym_12)) ELSE FALSE END AS condition
+CALL apoc.do.when(condition, 
+  'MATCH (n:DataAsset {Acronym: selected_acronym })
+CALL apoc.path.spanningTree(n, {
+  maxLevel: selected_distance
+})
+YIELD path
+RETURN path
+
+
+',
+  'Match (n) OPTIONAL MATCH (n)-[path]-() RETURN n, path', 
+  {selected_acronym: $neodash_dataasset_acronym_12, selected_distance: $neodash_distance})
+YIELD value
+RETURN value.path, value.n
