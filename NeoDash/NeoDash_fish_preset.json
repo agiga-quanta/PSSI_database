@@ -62,7 +62,8 @@
       "neodash_dataasset_uid_10": "FOS",
       "neodash_dataasset_uid_10_display": "FOS",
       "neodash_dataasset_uid_11": "PACHARV3",
-      "neodash_dataasset_uid_11_display": "PACHARV3"
+      "neodash_dataasset_uid_11_display": "PACHARV3",
+      "neodash_distance": "2"
     }
   },
   "pages": [
@@ -99,8 +100,8 @@
         },
         {
           "title": "Display of entire graph database",
-          "query": "MATCH (n)\nOPTIONAL MATCH (n)-[r]-()\nRETURN n, r",
-          "width": 5,
+          "query": "\nWITH CASE $neodash_dataasset_acronym_12 IS NOT NULL WHEN TRUE THEN not(isEmpty($neodash_dataasset_acronym_12)) ELSE FALSE END AS condition\nCALL apoc.do.when(condition, \n  'MATCH (n:DataAsset {Acronym: selected_acronym })\nCALL apoc.path.spanningTree(n, {\n  maxLevel: selected_distance\n})\nYIELD path\nRETURN path\n\n\n',\n  'Match (n) OPTIONAL MATCH (n)-[path]-() RETURN n, path', \n  {selected_acronym: $neodash_dataasset_acronym_12, selected_distance: $neodash_distance})\nYIELD value\nRETURN value.path, value.n",
+          "width": 7,
           "height": 3,
           "x": 0,
           "y": 2,
@@ -158,7 +159,7 @@
           "title": "Search data asset here",
           "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`Acronym`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`Acronym` as value,  n.`Acronym` as display ORDER BY size(toString(value)) ASC LIMIT 5",
           "width": 3,
-          "height": 2,
+          "height": 1,
           "x": 9,
           "y": 0,
           "type": "select",
@@ -175,14 +176,29 @@
         {
           "title": "Data asset details",
           "query": "MATCH (n:DataAsset)\n    WHERE n.uid = $neodash_dataasset_acronym_12  \n    UNWIND keys(n) as nk\nWITH n, nk\n    RETURN nk as properties, n[nk] as values ORDER BY nk",
-          "width": 7,
+          "width": 5,
           "height": 3,
-          "x": 5,
+          "x": 7,
           "y": 2,
           "type": "table",
           "selection": {},
           "settings": {
             "columnWidths": "[1,5]"
+          }
+        },
+        {
+          "title": "Maximum distance away",
+          "query": "RETURN true",
+          "width": 3,
+          "height": 1,
+          "x": 9,
+          "y": 1,
+          "type": "select",
+          "selection": {},
+          "settings": {
+            "type": "Free Text",
+            "entityType": "Distance",
+            "parameterName": "neodash_distance"
           }
         }
       ]
