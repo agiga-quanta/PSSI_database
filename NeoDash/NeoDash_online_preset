@@ -204,7 +204,7 @@
         },
         {
           "title": "DROPBOX_LINK_ENDS_WITH_1",
-          "query": "The report above currently has an invalid link to import, where it is missing the DROPBOX_LINK_ENDS_WITH_1. Replace the DROPBOX_LINK_ENDS_WITH_1 to run the report. \n\nTo find the DROPBOX_LINK_ENDS_WITH_1, go to where you have uploaded the file, and make sure the file is publicly available. It should look like below:  \nhttps://www.dropbox.com/s/qi68pdf7qfhvl59/lineage.tsv?dl=0  \n\nNow change the last number to 1, such as below  \nhttps://www.dropbox.com/s/qi68pdf7qfhvl59/lineage.tsv?dl=1\n\nNow copy the link into the DROPBOX_LINK_ENDS_WITH_1 above and run the report\n",
+          "query": "The report above currently has an invalid link to import, where it is missing the DROPBOX_LINK_ENDS_WITH_1. Replace the DROPBOX_LINK_ENDS_WITH_1 to run the report. \n\nTo find the DROPBOX_LINK_ENDS_WITH_1, go to where you have uploaded the file, and make sure the file is publicly available. It should look like below:  \n<DROPBOX_LINK>dl=0  \n\nNow change the last number to 1, such as below  \n<DROPBOX_LINK>dl=1\n\nNow copy the link into the DROPBOX_LINK_ENDS_WITH_1 above and run the report\n",
           "width": 3,
           "height": 1,
           "x": 6,
