@@ -152,11 +152,12 @@ You will be prompted with the `Protocol` and `Hostname`, as well as the `Usernam
 
 A note for connecting to AuraDB, if you are using a VPN and are unable to connect to AuraDB, try disable the VPN and reconnect. In addition, there is also a more detailed guide included [here](https://github.com/agiga-quanta/PSSI_database/blob/main/Guide%20to%20check%20connection%20to%20AuraDB.pdf).
 
-Once you are inside, you can now load the dashboard link [here](https://github.com/agiga-quanta/PSSI_database/blob/main/NeoDash/NeoDash_online_preset) to use it with the new database. Note that this dashboard is incomplete because it does not have the file url to link to. In this case, when you go to import data, you will have to write the DROPBOX_LINK into the report, and change the last number from `0` to `1`.
+Once you are inside, you can now load the dashboard link [here](https://github.com/agiga-quanta/PSSI_database/blob/main/NeoDash/NeoDash_online_preset) to use it with the new database. Note that this dashboard is incomplete because it does not have the file url to link to. 
+For this guide, we have chosen to host the example file on Dropbox, where you can access it at this link: https://www.dropbox.com/s/72a7b40krcm9g62/lineage.tsv?dl=0. To continue the guide, when you go to import data, you will have to write the dropbox link into the report, and change the last number from `0` to `1`. 
 
 For example, you will change `https://www.dropbox.com/s/72a7b40krcm9g62/lineage.tsv?dl=0` to `https://www.dropbox.com/s/72a7b40krcm9g62/lineage.tsv?dl=1`. The changes allows neo4j to download the data and import it into AuraDB. This link will be kept available for you to try and use. 
 
-Once you have the link, follow the instruction in the dashboard, right below the import.  
+Once you have the link, follow the instruction in the dashboard, right below the import. You will have to replace all the `DROPBOX_LINK_ENDS_WITH_1` in the import report to the new dropbox link.    
 <img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Dropbox%20link%20in%20dashboard.jpg?raw=true">
 
 ## Part 6: Exporting to `.graphml` file
