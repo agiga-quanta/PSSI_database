@@ -3,7 +3,9 @@ This is a guide to importing, and visualizing PSSI database with a `NeoDash` das
 
 This guide is also included in a youtube playlist showing how to download and install `neo4j` Desktop [here](https://youtube.com/playlist?list=PL3KBtMOTv6gM73L33Ie1kHHKp6SXbEpyH)
 
-The guide has also been updated to work on AuraDB at [part 4](https://github.com/agiga-quanta/PSSI_database#part-4-creating-an-auradb-instance). You can access the online version of the NeoDash [here](https://github.com/agiga-quanta/PSSI_database/blob/main/NeoDash/NeoDash_online_preset). To export to `.graphml`, you would follow [part 6 here](https://github.com/agiga-quanta/PSSI_database#part-6-exporting-to-graphml-file). For this part, it is currently applicable for database on desktop computer or local physical servers only. 
+The guide has also been updated to work on AuraDB at [part 4](https://github.com/agiga-quanta/PSSI_database#part-4-creating-an-auradb-instance). You can access the online version of the NeoDash [here](https://github.com/agiga-quanta/PSSI_database/blob/main/NeoDash/NeoDash_online_preset). A note for connecting to AuraDB, if you are using a VPN and are unable to connect to AuraDB, try disable the VPN and reconnect. In addition, there is also a more detailed guide included [here](https://github.com/agiga-quanta/PSSI_database/blob/main/Guide%20to%20check%20connection%20to%20AuraDB.pdf).
+
+To export to `.graphml`, you would follow [part 6 here](https://github.com/agiga-quanta/PSSI_database#part-6-exporting-to-graphml-file). For this part, it is currently applicable for database on desktop computer or local physical servers only. 
 
 ## Part 1: Importing data into `neo4j`
 Since our dataset are already made above in tsv files, you can import them into the project by following the steps below:
