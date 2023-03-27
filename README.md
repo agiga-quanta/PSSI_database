@@ -148,14 +148,14 @@ You will be prompted with the `Protocol` and `Hostname`, as well as the `Usernam
 - `Password`: `NEO4J_PASSWORD` from the `.env` file  
 <img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Connect%20dashboard%20to%20auradb.jpg">
 
-A note for connecting to AuraDB, if you are using a VPN and are unable to connect to AuraDB, try disable the VPN and reconnect. In addition, there is also a more detailed guide included here.
+A note for connecting to AuraDB, if you are using a VPN and are unable to connect to AuraDB, try disable the VPN and reconnect. In addition, there is also a more detailed guide included [here](https://github.com/agiga-quanta/PSSI_database/blob/main/Guide%20to%20check%20connection%20to%20AuraDB.pdf).
 
 Once you are inside, you can now load the dashboard link [here](https://github.com/agiga-quanta/PSSI_database/blob/main/NeoDash/NeoDash_online_preset) to use it with the new database. Note that this dashboard is incomplete because it does not have the file url to link to. In this case, when you go to import data, you will have to write the DROPBOX_LINK into the report, and change the last number from `0` to `1`.
 
 For example, you will change `https://www.dropbox.com/s/72a7b40krcm9g62/lineage.tsv?dl=0` to `https://www.dropbox.com/s/72a7b40krcm9g62/lineage.tsv?dl=1`. The changes allows neo4j to download the data and import it into AuraDB. This link will be kept available for you to try and use. 
 
 Once you have the link, follow the instruction in the dashboard, right below the import.  
-<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/NeoDash%20online.jpg?raw=true">
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Dropbox%20link%20in%20dashboard.jpg?raw=true">
 
 ## Part 6: Exporting to `.graphml` file
 Before we do this, the exporting from neo4j uses apoc, so we need to create a configuration file for apoc on our computer. Open up any document writing tools (in this case, the program used is Visual Studio Code), create a file called `apoc.conf`, where you will write these 2 lines, or just copy them. Once done, simply save it to the conf folder and restart your neo4j.
