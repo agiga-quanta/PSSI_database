@@ -7,22 +7,22 @@ WITH row
 WITH row
     MERGE (n:DataAsset {uid: TRIM(row.Acronym)})
         SET
-            n.Name = TRIM(row.Name),
+            n.Asset_Name = TRIM(row.Asset_Name),
             n.Graph_ID = TRIM(row.Graph_ID),
             n.Type = TRIM(row.Type),
             n.Acronym = TRIM(row.Acronym),
             n.Description = TRIM(row.Description),
             n.Format = TRIM(row.Format),
-            n.Decision = TRIM(row.Decision),
-            n.Inbound = TRIM(row.Inbound_Data_Linkage),
-            n.Outbound = TRIM(row.Outbound_Data_Linkage),
+            n.Informs_Decision = TRIM(row.Informs_Decision),
+            n.Linkage_Inbound = TRIM(row.Linkage_Inbound),
+            n.Linkage_Outbound = TRIM(row.Linkage_Outbound),
             n.Twoway = TRIM(row.Two_Way_Linkage),
             n.Sends_to_dataset = TRIM(row.Send_To_Dataset),
             n.Sends_to_data_product = TRIM(row.Send_To_Data_Product),
             n.Informs_decision = TRIM(row.Informs_Decision),
             n.Label = TRIM(row.Label),
             n.Topic = TRIM(row.Topic);
-            
+
 LOAD CSV WITH HEADERS FROM 'file:///lineage.tsv' AS row FIELDTERMINATOR '\t'
 WITH row
     WHERE row IS NOT NULL AND row.Acronym IS NOT NULL
