@@ -153,6 +153,7 @@ You will be prompted with the `Protocol` and `Hostname`, as well as the `Usernam
 A note for connecting to AuraDB, if you are using a VPN and are unable to connect to AuraDB, try disable the VPN and reconnect. In addition, there is also a more detailed guide included [here](https://github.com/agiga-quanta/PSSI_database/blob/main/Guide%20to%20check%20connection%20to%20AuraDB.pdf).
 
 Once you are inside, you can now load the dashboard link [here](https://github.com/agiga-quanta/PSSI_database/blob/main/NeoDash/NeoDash_online_preset) to use it with the new database. Note that this dashboard is incomplete because it does not have the file url to link to. 
+
 ### 5.1 Hosting file on Dropbox. 
 After you have uploaded the data on Dropbox, its link should be of this format: <DROPBOX_LINK>dl=0. In order for AuraDB to access this file, you will have to change the last number from `0` to `1`. 
 
@@ -165,17 +166,17 @@ After you have loaded the data into the dashboard, you should then remove the fi
 
 ### 5.2 Hosting file on OneDrive. 
 After you uploaded the data file to OneDrive, right click the item to select sharing option `Embed`, similar to the image below.  
-<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Dropbox%20link%20in%20dashboard.jpg?raw=true">  
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/OneDrive.png?raw=true">  
 
 After that, you will be prompted to generate an HTML url for the file. Select the blue `Generate` button, and you should see the link, such as below:  
-<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Dropbox%20link%20in%20dashboard.jpg?raw=true">
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/OneDrive%20embedded.png?raw=true">
 
 Since the link given to us is for generic access, and not specifically meant to work with AuraDB, we will have to change it. Currently, the link should be like this: `<iframe src="https://onedrive.live.com/embed?cid=...&resid=...&authkey=...&em=2" width="476" height="288" frameborder="0" scrolling="no"></iframe>`
 
 The only important part is the url. For that reason, you will have to extract the link, and change the word `embed` to `download`. This is the final link that is usable that you should have: `https://onedrive.live.com/download?cid=...&resid=...&authkey=...&em=2`. 
 
 Once you replace the `ONEDRIVE_NEW_LINK` in the dashboard with this link, you should be able to import the data. The dashboard will also have the instruction below the import area for you to follow.   
-<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Dropbox%20link%20in%20dashboard.jpg?raw=true">
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Import%20from%20Onedrive.png?raw=true">
 
 After you have loaded the data into the dashboard, you should then remove the file from OneDrive. 
 
