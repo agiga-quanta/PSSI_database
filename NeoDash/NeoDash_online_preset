@@ -3,7 +3,7 @@
   "version": "2.2",
   "settings": {
     "pagenumber": 0,
-    "editable": true,
+    "editable": false,
     "fullscreenEnabled": false,
     "parameters": {
       "neodash_dataasset_uid_1": "AQUIIS",
@@ -54,8 +54,8 @@
       "neodash_dataasset_p12_uid_11_display": "FOS",
       "neodash_dataasset_p01_acronym_12": "FOS",
       "neodash_dataasset_p01_acronym_12_display": "FOS",
-      "neodash_dataasset_acronym_12": "FOS",
-      "neodash_dataasset_acronym_12_display": "FOS",
+      "neodash_dataasset_acronym_12": "FOS_FNS",
+      "neodash_dataasset_acronym_12_display": "FOS_FNS",
       "neodash_dataasset_uid_9": "FOS",
       "neodash_dataasset_uid_9_display": "FOS",
       "neodash_maximum_length_2": "1",
@@ -83,8 +83,8 @@
           "settings": {}
         },
         {
-          "title": "Clear database and Import data",
-          "query": "CALL apoc.cypher.runMany(\"\n//Clear current database\nMATCH(n) DETACH DELETE n;\n//Load fishy lineage data\nLOAD CSV WITH HEADERS FROM 'DROPBOX_LINK_ENDS_WITH_1' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {uid: TRIM(row.Acronym)})\n        SET\n            n.Name = TRIM(row.Name),\n            n.Graph_ID = TRIM(row.Graph_ID),\n            n.Type = TRIM(row.Type),\n            n.Acronym = TRIM(row.Acronym),\n            n.Description = TRIM(row.Description),\n            n.Format = TRIM(row.Format),\n            n.Decision = TRIM(row.Decision),\n            n.Inbound = TRIM(row.Inbound_Data_Linkage),\n            n.Outbound = TRIM(row.Outbound_Data_Linkage),\n            n.Twoway = TRIM(row.Two_Way_Linkage),\n            n.Sends_to_dataset = TRIM(row.Send_To_Dataset),\n            n.Sends_to_data_product = TRIM(row.Send_To_Data_Product),\n            n.Informs_decision = TRIM(row.Informs_Decision),\n            n.Label = TRIM(row.Label),\n            n.Topic = TRIM(row.Topic);\n            \nLOAD CSV WITH HEADERS FROM 'DROPBOX_LINK_ENDS_WITH_1' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {uid: TRIM(row.Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Inbound_Data_Linkage_List, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {uid: TRIM(link[0])})\n    MERGE (n)<-[r:IN]-(m)\n        SET \n            r.type = TRIM(link[1])\n\nUNION \n\nLOAD CSV WITH HEADERS FROM 'DROPBOX_LINK_ENDS_WITH_1' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {uid: TRIM(row.Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Outbound_Data_Linkage_List, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {uid: TRIM(link[0])})\n    MERGE (n)-[r:OUT]->(m)\n        SET \n            r.type = TRIM(link[1])\n\nUNION \n\nLOAD CSV WITH HEADERS FROM 'DROPBOX_LINK_ENDS_WITH_1' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {uid: TRIM(row.Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Two_Way_Linkage_List, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {uid: TRIM(link[0])})\n    MERGE (n)<-[r:TWO_WAYS]->(m)\n        SET \n            r.type = TRIM(link[1])\n          \nUNION \n\nLOAD CSV WITH HEADERS FROM 'DROPBOX_LINK_ENDS_WITH_1' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {uid: TRIM(row.Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Send_To_Dataset, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {uid: TRIM(link[0])})\n    MERGE (n)-[r:TO_DATASET]->(m)\n        SET \n            r.type = TRIM(link[1])\n            \nUNION \n\nLOAD CSV WITH HEADERS FROM 'DROPBOX_LINK_ENDS_WITH_1' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {uid: TRIM(row.Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Send_To_Data_Product, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {uid: TRIM(link[0])})\n    MERGE (n)-[r:TO_PRODUCT]->(m)\n        SET \n            r.type = TRIM(link[1])\n            \nUNION \n\nLOAD CSV WITH HEADERS FROM 'DROPBOX_LINK_ENDS_WITH_1'AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {uid: TRIM(row.Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Informs_Decision, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {uid: TRIM(link[0])})\n    MERGE (n)-[r:INFORMS]->(m)\n        SET \n            r.type = TRIM(link[1]);\n\", {statistics: false});\n",
+          "title": "Import data through Dropbox",
+          "query": "CALL apoc.cypher.runMany(\"\n//Clear current database\nMATCH(n) DETACH DELETE n;\nLOAD CSV WITH HEADERS FROM 'DROPBOX_LINK_ENDS_WITH_1' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {uid: TRIM(row.Acronym)})\n        SET\n            n.Asset_Name = TRIM(row.Asset_Name),\n            n.Graph_ID = TRIM(row.Graph_ID),\n            n.Type = TRIM(row.Type),\n            n.Acronym = TRIM(row.Acronym),\n            n.Description = TRIM(row.Description),\n            n.Format = TRIM(row.Format),\n            n.Supports_Decision = TRIM(row.Supports_Decision),\n            n.Linkage_Inbound = TRIM(row.Linkage_Inbound),\n            n.Linkage_Outbound = TRIM(row.Linkage_Outbound),\n            n.Linkage_Two_Way = TRIM(row.Linkage_Two_Way),\n            n.Sends_to_dataset = TRIM(row.Send_To_Dataset),\n            n.Sends_to_data_product = TRIM(row.Send_To_Data_Product),\n            n.Informs_decision = TRIM(row.Informs_Decision),\n            n.Label = TRIM(row.Label),\n            n.Topic = TRIM(row.Topic);\n\nLOAD CSV WITH HEADERS FROM 'DROPBOX_LINK_ENDS_WITH_1' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {uid: TRIM(row.Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Inbound_Data_Linkage_List, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {uid: TRIM(link[0])})\n    MERGE (n)<-[r:IN]-(m)\n        SET \n            r.type = TRIM(link[1])\n\nUNION \n\nLOAD CSV WITH HEADERS FROM 'DROPBOX_LINK_ENDS_WITH_1' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {uid: TRIM(row.Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Outbound_Data_Linkage_List, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {uid: TRIM(link[0])})\n    MERGE (n)-[r:OUT]->(m)\n        SET \n            r.type = TRIM(link[1])\n\nUNION \n\nLOAD CSV WITH HEADERS FROM 'DROPBOX_LINK_ENDS_WITH_1' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {uid: TRIM(row.Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Two_Way_Linkage_List, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {uid: TRIM(link[0])})\n    MERGE (n)<-[r:TWO_WAYS]->(m)\n        SET \n            r.type = TRIM(link[1])\n          \nUNION \n\nLOAD CSV WITH HEADERS FROM 'DROPBOX_LINK_ENDS_WITH_1' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {uid: TRIM(row.Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Send_To_Dataset, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {uid: TRIM(link[0])})\n    MERGE (n)-[r:TO_DATASET]->(m)\n        SET \n            r.type = TRIM(link[1])\n            \nUNION \n\nLOAD CSV WITH HEADERS FROM 'DROPBOX_LINK_ENDS_WITH_1' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {uid: TRIM(row.Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Send_To_Data_Product, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {uid: TRIM(link[0])})\n    MERGE (n)-[r:TO_PRODUCT]->(m)\n        SET \n            r.type = TRIM(link[1])\n            \nUNION \n\nLOAD CSV WITH HEADERS FROM 'DROPBOX_LINK_ENDS_WITH_1' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {uid: TRIM(row.Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Informs_Decision, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {uid: TRIM(link[0])})\n    MERGE (n)-[r:INFORMS]->(m)\n        SET \n            r.type = TRIM(link[1]);\n\", {statistics: false});\n",
           "width": 3,
           "height": 1,
           "x": 6,
@@ -161,8 +161,8 @@
           "query": "MATCH (n:`DataAsset`) \nWHERE toLower(toString(n.`Acronym`)) CONTAINS toLower($input) \nRETURN DISTINCT n.`Acronym` as value,  n.`Acronym` as display ORDER BY size(toString(value)) ASC LIMIT 5",
           "width": 3,
           "height": 1,
-          "x": 9,
-          "y": 0,
+          "x": 7,
+          "y": 2,
           "type": "select",
           "selection": {},
           "settings": {
@@ -178,9 +178,9 @@
           "title": "Data asset details",
           "query": "MATCH (n:DataAsset)\n    WHERE n.uid = $neodash_dataasset_acronym_12  \n    UNWIND keys(n) as nk\nWITH n, nk\n    RETURN nk as properties, n[nk] as values ORDER BY nk",
           "width": 5,
-          "height": 3,
+          "height": 2,
           "x": 7,
-          "y": 2,
+          "y": 3,
           "type": "table",
           "selection": {},
           "settings": {
@@ -190,10 +190,10 @@
         {
           "title": "Maximum distance away",
           "query": "RETURN true",
-          "width": 3,
+          "width": 2,
           "height": 1,
-          "x": 9,
-          "y": 1,
+          "x": 10,
+          "y": 2,
           "type": "select",
           "selection": {},
           "settings": {
@@ -204,10 +204,42 @@
         },
         {
           "title": "DROPBOX_LINK_ENDS_WITH_1",
-          "query": "The report above currently has an invalid link to import, where it is missing the DROPBOX_LINK_ENDS_WITH_1. Replace the DROPBOX_LINK_ENDS_WITH_1 to run the report. \n\nTo find the DROPBOX_LINK_ENDS_WITH_1, go to where you have uploaded the file, and make sure the file is publicly available. It should look like below:  \n<DROPBOX_LINK>dl=0  \n\nNow change the last number to 1, such as below  \n<DROPBOX_LINK>dl=1\n\nNow copy the link into the DROPBOX_LINK_ENDS_WITH_1 above and run the report\n",
+          "query": "The report above currently has an invalid link to import, where it is missing the DROPBOX_LINK_ENDS_WITH_1. Replace the DROPBOX_LINK_ENDS_WITH_1 to run the report. \n\nTo find the DROPBOX_LINK_ENDS_WITH_1, go to where you have uploaded the file, and make sure the file is publicly available. It should look like below:  \n<DROPBOX_LINK>dl=0  \n\nNow change the last number to 1, such as below  \n<DROPBOX_LINK>dl=1\n\nNow copy the link into the DROPBOX_LINK_ENDS_WITH_1 above and run the report. If you need more insturction, click [here](https://github.com/agiga-quanta/PSSI_database#51-hosting-file-on-dropbox).\n",
           "width": 3,
           "height": 1,
           "x": 6,
+          "y": 1,
+          "type": "text",
+          "selection": {},
+          "settings": {
+            "type": "Free Text",
+            "entityType": "Google file ID",
+            "parameterName": "neodash_google_file_id"
+          }
+        },
+        {
+          "title": "Import data through OneDrive",
+          "query": "CALL apoc.cypher.runMany(\"\n//Clear current database\nMATCH(n) DETACH DELETE n;\nLOAD CSV WITH HEADERS FROM 'ONEDRIVE_NEW_LINK' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {uid: TRIM(row.Acronym)})\n        SET\n            n.Asset_Name = TRIM(row.Asset_Name),\n            n.Graph_ID = TRIM(row.Graph_ID),\n            n.Type = TRIM(row.Type),\n            n.Acronym = TRIM(row.Acronym),\n            n.Description = TRIM(row.Description),\n            n.Format = TRIM(row.Format),\n            n.Supports_Decision = TRIM(row.Supports_Decision),\n            n.Linkage_Inbound = TRIM(row.Linkage_Inbound),\n            n.Linkage_Outbound = TRIM(row.Linkage_Outbound),\n            n.Linkage_Two_Way = TRIM(row.Linkage_Two_Way),\n            n.Sends_to_dataset = TRIM(row.Send_To_Dataset),\n            n.Sends_to_data_product = TRIM(row.Send_To_Data_Product),\n            n.Informs_decision = TRIM(row.Informs_Decision),\n            n.Label = TRIM(row.Label),\n            n.Topic = TRIM(row.Topic);\n\nLOAD CSV WITH HEADERS FROM 'ONEDRIVE_NEW_LINK' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {uid: TRIM(row.Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Inbound_Data_Linkage_List, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {uid: TRIM(link[0])})\n    MERGE (n)<-[r:IN]-(m)\n        SET \n            r.type = TRIM(link[1])\n\nUNION \n\nLOAD CSV WITH HEADERS FROM 'ONEDRIVE_NEW_LINK' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {uid: TRIM(row.Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Outbound_Data_Linkage_List, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {uid: TRIM(link[0])})\n    MERGE (n)-[r:OUT]->(m)\n        SET \n            r.type = TRIM(link[1])\n\nUNION \n\nLOAD CSV WITH HEADERS FROM 'ONEDRIVE_NEW_LINK' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {uid: TRIM(row.Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Two_Way_Linkage_List, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {uid: TRIM(link[0])})\n    MERGE (n)<-[r:TWO_WAYS]->(m)\n        SET \n            r.type = TRIM(link[1])\n          \nUNION \n\nLOAD CSV WITH HEADERS FROM 'ONEDRIVE_NEW_LINK' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {uid: TRIM(row.Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Send_To_Dataset, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {uid: TRIM(link[0])})\n    MERGE (n)-[r:TO_DATASET]->(m)\n        SET \n            r.type = TRIM(link[1])\n            \nUNION \n\nLOAD CSV WITH HEADERS FROM 'ONEDRIVE_NEW_LINK' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {uid: TRIM(row.Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Send_To_Data_Product, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {uid: TRIM(link[0])})\n    MERGE (n)-[r:TO_PRODUCT]->(m)\n        SET \n            r.type = TRIM(link[1])\n            \nUNION \n\nLOAD CSV WITH HEADERS FROM 'ONEDRIVE_NEW_LINK' AS row FIELDTERMINATOR '\\t'\nWITH row\n    WHERE row IS NOT NULL AND row.Acronym IS NOT NULL\nWITH row\n    MERGE (n:DataAsset {uid: TRIM(row.Acronym)})\nWITH row, n\n    UNWIND SPLIT(row.Informs_Decision, '|') AS links \nWITH row, n, SPLIT(links, ':') AS link\n    MERGE (m:DataAsset {uid: TRIM(link[0])})\n    MERGE (n)-[r:INFORMS]->(m)\n        SET \n            r.type = TRIM(link[1]);\n\", {statistics: false});\n",
+          "width": 3,
+          "height": 1,
+          "x": 9,
+          "y": 0,
+          "type": "value",
+          "selection": {},
+          "settings": {
+            "nodePositions": {},
+            "autorun": false,
+            "refreshButtonEnabled": false,
+            "description": "Click on the play button to load data into neo4j.",
+            "type": "Node Property"
+          }
+        },
+        {
+          "title": "ONEDRIVE_NEW_LINK",
+          "query": "To get the right link to import, please follow the guide at this section: [here](https://github.com/agiga-quanta/PSSI_database#52-hosting-file-on-onedrive).\n\nOnce you have the correct link, it should look like this: <iframe src=\"https://onedrive.live.com/download?<CID>&<RESID>&<authkey>\nThen proceed to replace all ONEDRIVE_NEW_LINK with the correct link.",
+          "width": 3,
+          "height": 1,
+          "x": 9,
           "y": 1,
           "type": "text",
           "selection": {},
