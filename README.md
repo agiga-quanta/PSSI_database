@@ -3,7 +3,9 @@ This is a guide to importing, and visualizing PSSI database with a `NeoDash` das
 
 This guide is also included in a youtube playlist showing how to download and install `neo4j` Desktop [here](https://youtube.com/playlist?list=PL3KBtMOTv6gM73L33Ie1kHHKp6SXbEpyH)
 
-The guide has also been updated to work on AuraDB. 
+The guide has also been updated to work on AuraDB at [part 4](https://github.com/agiga-quanta/PSSI_database#part-4-creating-an-auradb-instance). You can access the online version of the NeoDash [here](https://github.com/agiga-quanta/PSSI_database/blob/main/NeoDash/NeoDash_online_preset). A note for connecting to AuraDB, if you are using a VPN and are unable to connect to AuraDB, try disable the VPN and reconnect. In addition, there is also a more detailed guide included [here](https://github.com/agiga-quanta/PSSI_database/blob/main/Guide%20to%20check%20connection%20to%20AuraDB.pdf).
+
+To export to `.graphml`, you would follow [part 6 here](https://github.com/agiga-quanta/PSSI_database#part-6-exporting-to-graphml-file). For this part, it is currently applicable for database on desktop computer or local physical servers only. 
 
 ## Part 1: Importing data into `neo4j`
 Since our dataset are already made above in tsv files, you can import them into the project by following the steps below:
@@ -112,53 +114,87 @@ In complementary to previous graph, this is one without the relationship showing
 
 ## Part 4: Creating an AuraDB instance
 To create an AuraDB instance, go to the following link: `https://neo4j.com/cloud/platform/aura-graph-database/`
-Once in, you click on `START FREE`, shown below: 
-(Signup on Aura)
+Once in, you click on `START FREE`, shown below:  
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Signup%20on%20Aura.jpg">
 
-Now that you are inside, you are prompted to sign into your neo4j aura account. however, if you do not have one, feel free to sign up. 
-(Sign up page)
+Now that you are inside, you are prompted to sign into your neo4j aura account. however, if you do not have one, feel free to sign up.  
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Sign%20up%20page.jpg">
 
 Once you logged in, you can create a `New Instance` by clicking on the blue button shown below. For the free tier, you can have one instance for free. The instance can be access from anywhere, as long as you have the link, username and password.   
-(Create an instance)
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Create%20an%20instance.jpg">
 
 You will also be prompted to save an auto-generated password, or download the `.env` file which will save both the auradb information and your credentials.  
-(Download the credentials)  
-
-Your username and password will also be shown below
-()
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Download%20the%20Credentials.jpg">  
+Your username and password will also be inside the `.env` file such as below  
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Username%20and%20Password.jpg"> 
 
 When being prompted to choose the dataset for the instance, select the `Empty Instance`:  
-(Create empty instance)
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Create%20empty%20instance%20.jpg"> 
 
 Now, `neo4j aura` will take some minutes to create the instance. For this project, it took roughly five minutes.  
-(Creating instance)
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Creating%20instances.jpg"> 
 
-Once it is running, you can see it like the image below. Note that the instance now have a green dot, showing the status as `Running`. At the bottom, you will see other details about the instances, such as `Neo4j version`, `Nodes`, `Relationships`, `Connection URL`. As of now, the `Connection URL` is our main interest. 
-(Details on instance as well as connection)
+Once it is running, you can see it like the image below. Note that the instance now have a green dot, showing the status as `Running`. At the bottom, you will see other details about the instances, such as `Neo4j version`, `Nodes`, `Relationships`, `Connection URL`. As of now, the `Connection URL` is our main interest.  
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Details%20on%20instance%20as%20well%20as%20connection.jpg"> 
 
 If you want to, you can access the auraDB directly by clicking `Open` button. Going in, you will need to use your username and password stored when downloading the `.env` file.
 
 ## Part 5: Connecting to AuraDB with NeoDash
-When connecting to AuraDB, use the following link: `https://neodash.graphapp.io`. When connected, select `New Dashboard`. You will be prompted with the `Protocol` and `Hostname`, as well as the `Username` and `Password`. For each of them, use the following:  
+When connecting to AuraDB, use the following link: `https://neodash.graphapp.io`. When connected, select `New Dashboard`.   
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/New%20Dashboard.jpg">  
+
+You will be prompted with the `Protocol` and `Hostname`, as well as the `Username` and `Password`. For each of them, use the following:  
 - `Protocol`: `neo4j-s`  
 - `Hostname`: the following part from the `Connection URL` shown above, or directly below  
 - `Username`: `NEO4J_USERNAME` from the `.env` file  
 - `Password`: `NEO4J_PASSWORD` from the `.env` file  
-()
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Connect%20dashboard%20to%20auradb.jpg">
 
-Once you are inside, you can now load the dashboard link here to use it with the new database. 
+A note for connecting to AuraDB, if you are using a VPN and are unable to connect to AuraDB, try disable the VPN and reconnect. In addition, there is also a more detailed guide included [here](https://github.com/agiga-quanta/PSSI_database/blob/main/Guide%20to%20check%20connection%20to%20AuraDB.pdf).
+
+Once you are inside, you can now load the dashboard link [here](https://github.com/agiga-quanta/PSSI_database/blob/main/NeoDash/NeoDash_online_preset) to use it with the new database. Note that this dashboard is incomplete because it does not have the file url to link to. 
+### 5.1 Hosting file on Dropbox. 
+After you have uploaded the data on Dropbox, its link should be of this format: <DROPBOX_LINK>dl=0. In order for AuraDB to access this file, you will have to change the last number from `0` to `1`. 
+
+For example, you will change `<DROPBOX_LINK>dl=0` to `<DROPBOX_LINK>?dl=1`. The changes allows neo4j to download the data and import it into AuraDB.  
+
+Once you have the link, follow the instruction in the dashboard, right below the import. You will have to replace all the `DROPBOX_LINK_ENDS_WITH_1` in the import report to the new dropbox link.    
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Dropbox%20link%20in%20dashboard.jpg?raw=true">
+
+After you have loaded the data into the dashboard, you should then remove the file from Dropbox.  
+
+### 5.2 Hosting file on OneDrive. 
+After you uploaded the data file to OneDrive, right click the item to select sharing option `Embed`, similar to the image below.  
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Dropbox%20link%20in%20dashboard.jpg?raw=true">  
+
+After that, you will be prompted to generate an HTML url for the file. Select the blue `Generate` button, and you should see the link, such as below:  
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Dropbox%20link%20in%20dashboard.jpg?raw=true">
+
+Since the link given to us is for generic access, and not specifically meant to work with AuraDB, we will have to change it. Currently, the link should be like this: `<iframe src="https://onedrive.live.com/embed?cid=...&resid=...&authkey=...&em=2" width="476" height="288" frameborder="0" scrolling="no"></iframe>`
+
+The only important part is the url. For that reason, you will have to extract the link, and change the word `embed` to `download`. This is the final link that is usable that you should have: `https://onedrive.live.com/download?cid=...&resid=...&authkey=...&em=2`. 
+
+Once you replace the `ONEDRIVE_NEW_LINK` in the dashboard with this link, you should be able to import the data. The dashboard will also have the instruction below the import area for you to follow.   
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Dropbox%20link%20in%20dashboard.jpg?raw=true">
+
+After you have loaded the data into the dashboard, you should then remove the file from OneDrive. 
 
 ## Part 6: Exporting to `.graphml` file
-Before we do this, the exporting from neo4j uses apoc, so we need to create a configuration file for apoc on our computer. Open up any document writing tools (in this case, the program used is Visual Studio Code), create a file called `apoc.conf`, where you will write these 2 lines, or just copy them.
+Before we do this, the exporting from neo4j uses apoc, so we need to create a configuration file for apoc on our computer. Open up any document writing tools (in this case, the program used is Visual Studio Code), create a file called `apoc.conf`, where you will write these 2 lines, or just copy them. Once done, simply save it to the conf folder and restart your neo4j.
 ```
+# Import settings for apoc
+apoc.import.file.enabled=true
 
-```
+# Export settings for apoc
+apoc.export.file.enabled=true
+```  
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Apoc%20conf.jpg">
 
-In order to export to `.graphml` file, you can access into any neo4j browser that is connected to the database, either on neo4j server, or on neo4j desktop, and run the following code line. In this case, the exported graphml file is named `fish.graphml`
+For this part, it is currently applicable for database on desktop computer or local physical servers only. In order to export to `.graphml` file, you can access into any neo4j browser that is connected to the database, either on neo4j server, or on neo4j desktop, and run the following code line. In this case, the exported graphml file is named `fish.graphml`
 ```cypher
 CALL apoc.export.graphml.all('fish.grapmhl', {})
-```
-(Export complete)
+```  
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/export%20complete.jpg?raw=true">
 
-Afterward, the file can be found in the `import` folder.  
-(Show import folder)
+Afterward, the file can be found in the `import` folder.    
+<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/exported%20graphml.jpg?raw=true">
