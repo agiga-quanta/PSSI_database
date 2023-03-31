@@ -204,7 +204,7 @@
         },
         {
           "title": "ONEDRIVE_NEW_LINK",
-          "query": "To get the right link to import, please follow the guide at this section: [here](https://github.com/agiga-quanta/PSSI_database#52-hosting-file-on-onedrive).\n\nOnce you have the correct link, it should look like this: <iframe src=\"https://onedrive.live.com/download?<CID>&<RESID>&<authkey>\nThen proceed to replace all ONEDRIVE_NEW_LINK with the correct link.",
+          "query": "To get the right link to import, please follow the guide at this section: [here](https://github.com/agiga-quanta/PSSI_database#51-hosting-file-on-onedrive).\n\nOnce you have the correct link, it should look like this: <iframe src=\"https://onedrive.live.com/download?<CID>&<RESID>&<authkey>\nThen proceed to replace all ONEDRIVE_NEW_LINK with the correct link.",
           "width": 3,
           "height": 1,
           "x": 6,
