@@ -3,7 +3,7 @@ This is a guide to importing, and visualizing PSSI database with a `NeoDash` das
 
 This guide is also included in a youtube playlist showing how to download and install `neo4j` Desktop [here](https://youtube.com/playlist?list=PL3KBtMOTv6gM73L33Ie1kHHKp6SXbEpyH)
 
-The guide has also been updated to work on AuraDB at [part 4](https://github.com/agiga-quanta/PSSI_database#part-4-creating-an-auradb-instance). You can access the online version of the NeoDash [here](https://github.com/agiga-quanta/PSSI_database/blob/main/NeoDash/NeoDash_online_preset). A note for connecting to AuraDB, if you are using a VPN and are unable to connect to AuraDB, try disable the VPN and reconnect. In addition, there is also a more detailed guide included [here](https://github.com/agiga-quanta/PSSI_database/blob/main/Guide%20to%20check%20connection%20to%20AuraDB.pdf). If you are hosting with DropBox, go to [section 5.1](https://github.com/agiga-quanta/PSSI_database#51-hosting-file-on-dropbox). If you are hosting with OneDrive, go to [section 5.2](https://github.com/agiga-quanta/PSSI_database#52-hosting-file-on-onedrive).
+The guide has also been updated to work on AuraDB at [part 4](https://github.com/agiga-quanta/PSSI_database#part-4-creating-an-auradb-instance). You can access the online version of the NeoDash [here](https://github.com/agiga-quanta/PSSI_database/blob/main/NeoDash/NeoDash_online_preset). A note for connecting to AuraDB, if you are using a VPN and are unable to connect to AuraDB, try disable the VPN and reconnect. In addition, there is also a more detailed guide included [here](https://github.com/agiga-quanta/PSSI_database/blob/main/Guide%20to%20check%20connection%20to%20AuraDB.pdf). If you are hosting with OneDrive, go to [section 5.2](https://github.com/agiga-quanta/PSSI_database#51-hosting-file-on-onedrive).
 
 To export to `.graphml`, you would follow [part 6 here](https://github.com/agiga-quanta/PSSI_database#part-6-exporting-to-graphml-file). For this part, it is currently applicable for database on desktop computer or local physical servers only. 
 
@@ -154,17 +154,7 @@ A note for connecting to AuraDB, if you are using a VPN and are unable to connec
 
 Once you are inside, you can now load the dashboard link [here](https://github.com/agiga-quanta/PSSI_database/blob/main/NeoDash/NeoDash_online_preset) to use it with the new database. Note that this dashboard is incomplete because it does not have the file url to link to. 
 
-### 5.1 Hosting file on Dropbox. 
-After you have uploaded the data on Dropbox, its link should be of this format: <DROPBOX_LINK>dl=0. In order for AuraDB to access this file, you will have to change the last number from `0` to `1`. 
-
-For example, you will change `<DROPBOX_LINK>dl=0` to `<DROPBOX_LINK>?dl=1`. The changes allows neo4j to download the data and import it into AuraDB.  
-
-Once you have the link, follow the instruction in the dashboard, right below the import. You will have to replace all the `DROPBOX_LINK_ENDS_WITH_1` in the import report to the new dropbox link.    
-<img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/Dropbox%20link%20in%20dashboard.jpg?raw=true">
-
-After you have loaded the data into the dashboard, you should then remove the file from Dropbox.  
-
-### 5.2 Hosting file on OneDrive. 
+### 5.1 Hosting file on OneDrive. 
 After you uploaded the data file to OneDrive, right click the item to select sharing option `Embed`, similar to the image below.  
 <img width="640" alt="image" src="https://github.com/agiga-quanta/PSSI_database/blob/main/images/OneDrive.png?raw=true">  
 
